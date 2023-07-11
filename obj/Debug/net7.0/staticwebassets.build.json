@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Wyj8LzwlT0fqirTsIJweCz6nUsodHMyalDDgzx75Su8=",
+  "Hash": "XbLTM2RDdos2oqMhfELyKl0qmd3sEh9Zbis/miSWnJQ=",
   "Source": "WebDevAss2",
   "BasePath": "_content/WebDevAss2",
   "Mode": "Default",
@@ -83,6 +83,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/Images/bank-icon.svg",
+      "SourceId": "WebDevAss2",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/",
+      "BasePath": "_content/WebDevAss2",
+      "RelativePath": "Images/bank-icon.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/Images/bank-icon.svg"
+    },
+    {
+      "Identity": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/Images/blank-profile-picture.png",
+      "SourceId": "WebDevAss2",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/",
+      "BasePath": "_content/WebDevAss2",
+      "RelativePath": "Images/blank-profile-picture.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/Images/blank-profile-picture.png"
     },
     {
       "Identity": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/js/site.js",

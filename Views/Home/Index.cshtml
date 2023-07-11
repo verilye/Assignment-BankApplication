@@ -2,9 +2,20 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <p>Home</p>
 
-    @await Component.InvokeAsync("SideBar")
-    
+<div class="row" height="100vh" width="100vw">
+    <div class="col-2">
+        @await Component.InvokeAsync("SideBar")
+    </div>
+    <div class="col-7">
+
+    </div>
+    <div class="col-3">
+        @await Component.InvokeAsync("ProfileDisplay")
+    </div>
+</div>
+
+
+
+
 </div>

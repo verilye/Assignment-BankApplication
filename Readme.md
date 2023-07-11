@@ -1,5 +1,9 @@
 # Web Development Technologies Assignment 2
 
+### Running the project
+
+dotnet watch allows hot reloading (play while you build)
+
 ## General Architecture and Plan
 
 The main program will be created using the repository pattern to save work on the admin portal. 
@@ -13,4 +17,6 @@ Brief design evaluations should take place before creating a feature and after t
 
 Designs:
 Bubble dark tone designs look modern
+
+
 

@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets/WebDevAss2.bundle.scp.css"
     },
     {
+      "Id": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/Images/bank-icon.svg",
+      "PackagePath": "staticwebassets/Images/bank-icon.svg"
+    },
+    {
+      "Id": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/Images/blank-profile-picture.png",
+      "PackagePath": "staticwebassets/Images/blank-profile-picture.png"
+    },
+    {
       "Id": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },
