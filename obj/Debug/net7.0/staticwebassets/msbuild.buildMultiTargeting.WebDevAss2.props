@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/WebDevAss2.props" />
+</Project>
