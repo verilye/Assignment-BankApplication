@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/scopedcss/projectbundle/WebDevAss2.bundle.scp.css",
-      "PackagePath": "staticwebassets/WebDevAss2.bundle.scp.css"
-    },
-    {
       "Id": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/Images/bank-icon.svg",
       "PackagePath": "staticwebassets/Images/bank-icon.svg"
     },

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XbLTM2RDdos2oqMhfELyKl0qmd3sEh9Zbis/miSWnJQ=",
+  "Hash": "lCLbPcod4b+w8ot/OkydURtTNg2pNQwLM90rt8Y6Nh8=",
   "Source": "WebDevAss2",
   "BasePath": "_content/WebDevAss2",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/scopedcss/bundle/WebDevAss2.styles.css",
-      "SourceId": "WebDevAss2",
-      "SourceType": "Computed",
-      "ContentRoot": "/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/scopedcss/bundle/",
-      "BasePath": "_content/WebDevAss2",
-      "RelativePath": "WebDevAss2.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/scopedcss/bundle/WebDevAss2.styles.css"
-    },
-    {
-      "Identity": "/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/scopedcss/projectbundle/WebDevAss2.bundle.scp.css",
-      "SourceId": "WebDevAss2",
-      "SourceType": "Computed",
-      "ContentRoot": "/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/scopedcss/projectbundle/",
-      "BasePath": "_content/WebDevAss2",
-      "RelativePath": "WebDevAss2.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/scopedcss/projectbundle/WebDevAss2.bundle.scp.css"
-    },
     {
       "Identity": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/css/site.css",
       "SourceId": "WebDevAss2",
