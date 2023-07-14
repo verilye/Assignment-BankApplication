@@ -12,6 +12,18 @@ public class LoginController : Controller
         return View();
     }
 
+    [HttpPost]
+    public IActionResult SubmitForm(){
+
+        string customerID = Request.Form["customerID"]!;
+        string password = Request.Form["password"]!;
+
+        Console.WriteLine("Im alive");
+        Console.WriteLine(customerID +" "+ password);
+        return View("Index");
+
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

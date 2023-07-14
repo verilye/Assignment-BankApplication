@@ -27,3 +27,5 @@
 /home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/WebDevAss2.pdb
 /home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/WebDevAss2.genruntimeconfig.cache
 /home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/ref/WebDevAss2.dll
+/home/connorlogan/Desktop/WebDevAss2/bin/Debug/net7.0/Newtonsoft.Json.dll
+/home/connorlogan/Desktop/WebDevAss2/obj/Debug/net7.0/WebDevAss2.csproj.CopyComplete

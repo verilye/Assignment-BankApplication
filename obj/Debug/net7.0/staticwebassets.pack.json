@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/Images/background.png",
+      "PackagePath": "staticwebassets/Images/background.png"
+    },
+    {
       "Id": "/home/connorlogan/Desktop/WebDevAss2/wwwroot/Images/bank-icon.svg",
       "PackagePath": "staticwebassets/Images/bank-icon.svg"
     },

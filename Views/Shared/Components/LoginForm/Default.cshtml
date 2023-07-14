@@ -8,10 +8,11 @@
 
     <div class="my-4 px-4 pt-2 pb-3 border d-flex flex-column ">
         <div class="my-3 fs-3 fw-bold">Sign in:</div>
-        <form>
-            <input class="form-control" type="text" placeholder="Customer ID" /> <br>
-            <input class="form-control" type="text" placeholder="Password" />
-            <button type="button" style="width:80%; margin-left:10%; border-radius:3rem;" class="btn btn-primary my-4 p-2 my-3 fw-bold">Sign In</button>
+
+        <form method="post" action="/Login/SubmitForm">
+            <input name="customerID" class="form-control" type="text" placeholder="Customer ID" /> <br>
+            <input name="password" class="form-control" type="text" placeholder="Password" />
+            <button type="submit" value="Submit" style="width:80%; margin-left:10%; border-radius:3rem;" class="btn btn-primary my-4 p-2 my-3 fw-bold">Sign In</button>
         </form>
     </div>
     <div style="width:80%; margin-left:10%">

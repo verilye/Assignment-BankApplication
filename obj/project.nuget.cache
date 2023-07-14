@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "cCAxow1EVw0+7bnxegOWaLrCoMp1X6dAVNMHNore8UIqNvcaeEXdtoV4mWogpYPkXeWpf4yXhmrYzRyn3mUYJA==",
+  "dgSpecHash": "KmMCqY6SMmoWift5SIbwMfgRU41aPO0g/bwGTMnwDy0XMmX7dCLbOY0gKPVG/XK6OT4OQS3SdxK7JdznrOq6Bg==",
   "success": true,
   "projectFilePath": "/home/connorlogan/Desktop/WebDevAss2/WebDevAss2.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/connorlogan/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace WebDevAss2.Repositories;
 
-class JsonDataWebServiceRepository<T> : IJsonDataWebServiceRepository
+class JsonDataWebServiceRepository<T> : IJsonDataWebServiceRepository<T>
 {
     HttpClient client;
     public JsonDataWebServiceRepository(HttpClient client)
@@ -28,7 +28,7 @@ class JsonDataWebServiceRepository<T> : IJsonDataWebServiceRepository
         return userData!;
     }
 
-    public void StoreJsonData(){
+    public void StoreJsonData(List<T> data){
         Console.WriteLine("Implement me");
         return;
     }

@@ -10,6 +10,4 @@ public class LoginFormViewComponent : ViewComponent
     {
         return View();
     }
-
-
 }

@@ -1,8 +1,8 @@
 namespace WebDevAss2.Repositories;
 
-public interface IJsonDataWebServiceRepository()
+public interface IJsonDataWebServiceRepository<T>
 {
-    public async Task<List<T>> FetchJsonData(string url);
+    public Task<List<T>> FetchJsonData(string url);
     public void StoreJsonData(List<T> data);
 
 }
