@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace WebDevAss2.Repositories;
 
-class JsonDataWebServiceRepository<T> : IJsonDataWebServiceRepository<T>
+public class JsonDataWebServiceRepository<T> : IJsonDataWebServiceRepository<T>
 {
     HttpClient client;
     public JsonDataWebServiceRepository(HttpClient client)
@@ -12,8 +12,7 @@ class JsonDataWebServiceRepository<T> : IJsonDataWebServiceRepository<T>
         this.client = client;
     }
 
-
-    public async Task<List<T>> FetchJsonData(string url)
+    public async Task<T> FetchJsonData(string url)
     {
         Console.WriteLine("Loading user data from api...");
         // Pull user data from passed in url and return it as a string
@@ -22,7 +21,7 @@ class JsonDataWebServiceRepository<T> : IJsonDataWebServiceRepository<T>
         string responseBody = await response.Content.ReadAsStringAsync();
 
         // deserialise Json 
-        List<T>? userData = JsonConvert.DeserializeObject<List<T>>(responseBody);
+        T userData = JsonConvert.DeserializeObject<T>(responseBody);
 
         if (userData == null) { Console.WriteLine("Error: User data NOT loaded!"); }
         return userData!;

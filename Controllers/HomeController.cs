@@ -1,21 +1,27 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
+using WebDevAss2.Repositories;
 
 namespace WebDevAss2.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    IJsonDataWebServiceRepository<List<Customer>> _jsonDataWebService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IJsonDataWebServiceRepository<List<Customer>> jsonDataWebService)
     {
         _logger = logger;
+        _jsonDataWebService = jsonDataWebService;
     }
 
     public IActionResult Index()
     {
-        return View();
+         // Paginate out user data here for proof of concept
+        List<Customer> customers = _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/").Result;
+
+        return View(customers[0]);
     }
 
     public IActionResult Privacy()
