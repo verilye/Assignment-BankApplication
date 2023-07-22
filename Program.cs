@@ -1,12 +1,15 @@
-using WebDevAss2.Repositories;
+using WebDevAss2.Data.Repositories;
 using WebDevAss2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IJsonDataWebServiceRepository<List<Customer>>, JsonDataWebServiceRepository<List<Customer>>>();
-builder.Services.AddHttpClient<JsonDataWebServiceRepository<List<Customer>>>();
+
+builder.Services.AddDBContext<McbaDbContext>( options=>options.UseSqlServer("connection string"));
+
+builder.Services.AddScoped<IUserDataWebServiceRepository<List<Customer>>, UserDataWebServiceRepository<List<Customer>>>();
+builder.Services.AddHttpClient<UserDataWebServiceRepository<List<Customer>>>();
 
 
 var app = builder.Build();

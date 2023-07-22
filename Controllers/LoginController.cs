@@ -6,6 +6,10 @@ namespace WebDevAss2.Controllers;
 
 public class LoginController : Controller
 {
+    private readonly McbaDbContext _context;
+    public LoginController(McbaDbContext context){
+        _context = context;
+    }
 
     public IActionResult Index()
     {

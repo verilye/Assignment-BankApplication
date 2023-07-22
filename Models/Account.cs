@@ -1,10 +1,18 @@
 namespace WebDevAss2.Models;
 public class Account
 {
+
+    [Key]
+    [Required]
+    [MaxLength(4), MinLength(4)]
     required public int accountNumber;
-    public char accountType;
+
+    [Required]
+    public AccountType accountType;
+
+    // Foreign Key
     public int customerId;
-    public Transaction[] transactions;
+    public ICollection<Transaction> transactions;
 
     // Login is like an object or a struct potentially, store it differently
 
@@ -15,9 +23,5 @@ public class Account
         this.customerId = customerId;
         this.transactions = transactions;
     }
-
-
-
-
 
 }

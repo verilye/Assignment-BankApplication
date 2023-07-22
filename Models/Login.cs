@@ -1,8 +1,20 @@
 namespace WebDevAss2.Models;
 public class Login
 {
-    public int loginId;
+
+    [Key]
+    [Required]
+    [MaxLength(8), MinLength(8)]
+    public string loginId;
+
+    // Foreign Key
+    public int customerId;
+
+    [Required]
+    [MaxLength(94), MinLength(3)]
     public string passwordHash;
+
+
 
     public Login(int loginId, string passwordHash)
     {   

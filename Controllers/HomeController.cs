@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
-using WebDevAss2.Repositories;
+using WebDevAss2.Data.Repositories;
 
 namespace WebDevAss2.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    IJsonDataWebServiceRepository<List<Customer>> _jsonDataWebService;
+    IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
 
-    public HomeController(ILogger<HomeController> logger, IJsonDataWebServiceRepository<List<Customer>> jsonDataWebService)
+    public HomeController(ILogger<HomeController> logger, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService)
     {
         _logger = logger;
         _jsonDataWebService = jsonDataWebService;

@@ -2,13 +2,26 @@ namespace WebDevAss2.Models;
 
 public class Transaction
 {
+
+    [Key, Required]
+    public int transactionID;
+
+    [Required, Range(0, int.MaxValue, ErrorMessage ="Must be a positive number")]
     public float amount;
-    public char TransactionType;
+
+    [Required]
+    public TransactionType TransactionType;
+
+    [Required, DataType(DataType.Date)]
     public string transactionTimeUtc;
+
+    [MaxLength(30)]
     public string? comment;
+
+    // Foreign Key
     public int accountNumber;
+    //Foreign Key
     public int? destinationAccountNumber;
-    public string transactionID;
 
     public Transaction(float amount, char transactionType, string transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
     {
@@ -25,5 +38,4 @@ public class Transaction
         this.transactionID = transactionID;
     }
 
-    
 }
