@@ -7,27 +7,28 @@ public class Transaction
 {
 
     [Key, Required]
-    public int transactionID;
+    public int transactionID{get;set;}
 
     [Required, Range(0, int.MaxValue, ErrorMessage ="Must be a positive number")]
-    public float amount;
+    public float amount{get;set;}
 
     [Required]
-    public TransactionType TransactionType;
+    public char TransactionType{get;set;}
 
     [Required, DataType(DataType.Date)]
-    public string transactionTimeUtc;
+    public string transactionTimeUtc{get;set;}
 
     [MaxLength(30)]
-    public string? comment;
+    public string? comment{get;set;}
 
     // Foreign Key
-    public int accountNumber;
+    public int accountNumber{get;set;}
     //Foreign Key
-    public int? destinationAccountNumber;
+    public int? destinationAccountNumber{get;set;}
 
-    public Transaction(float amount, TransactionType transactionType, string transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
+    public Transaction(int transactionID, float amount, char transactionType, string transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
     {
+        this.transactionID = transactionID;
         this.amount = amount;
         this.TransactionType = transactionType;
         this.transactionTimeUtc = transactionTimeUtc;
