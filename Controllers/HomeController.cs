@@ -2,18 +2,24 @@
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
 using WebDevAss2.Data.Repositories;
+using WebDevAss2.Data;
 
 namespace WebDevAss2.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
+    private readonly IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
+    private readonly McbaDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService)
+    public HomeController(
+        ILogger<HomeController> logger
+        ,IUserDataWebServiceRepository<List<Customer>> jsonDataWebService
+        ,McbaDbContext context)
     {
         _logger = logger;
         _jsonDataWebService = jsonDataWebService;
+        _context = context;
     }
 
     public IActionResult Index()

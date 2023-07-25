@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 namespace WebDevAss2.Models;
 
 public class Transaction
@@ -23,7 +26,7 @@ public class Transaction
     //Foreign Key
     public int? destinationAccountNumber;
 
-    public Transaction(float amount, char transactionType, string transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
+    public Transaction(float amount, TransactionType transactionType, string transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
     {
         this.amount = amount;
         this.TransactionType = transactionType;
@@ -32,10 +35,6 @@ public class Transaction
         this.accountNumber = accountNumber;
         this.destinationAccountNumber = destinationAccountNumber;
 
-    }
-
-    public void SetTransactionID(string transactionID){
-        this.transactionID = transactionID;
     }
 
 }

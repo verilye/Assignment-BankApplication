@@ -1,5 +1,7 @@
-namespace WebDevAss2.Models;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
+namespace WebDevAss2.Models;
 public class Customer{
 
     [Key]
@@ -39,7 +41,7 @@ public class Customer{
     public ICollection<Account> accounts;
     public Login login;
 
-    public Customer(int customerId, string name, string address, string city, string postCode, Account[] accounts, Login login)
+    public Customer(int customerId, string name, string address, string city, int postCode, ICollection<Account> accounts, Login login)
     {
         this.customerId = customerId;
         this.name = name;

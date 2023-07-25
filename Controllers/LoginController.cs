@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
+using WebDevAss2.Data;
 
 namespace WebDevAss2.Controllers;
 

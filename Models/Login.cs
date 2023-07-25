@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 namespace WebDevAss2.Models;
 public class Login
 {
@@ -16,7 +19,7 @@ public class Login
 
 
 
-    public Login(int loginId, string passwordHash)
+    public Login(string loginId, string passwordHash)
     {   
         this.loginId = loginId;
         this.passwordHash = passwordHash;

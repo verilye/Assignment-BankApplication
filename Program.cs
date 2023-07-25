@@ -1,13 +1,16 @@
 using WebDevAss2.Data.Repositories;
 using WebDevAss2.Models;
+using WebDevAss2.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDBContext<McbaDbContext>( options=>options.UseSqlServer("connection string"));
-
+builder.Services.AddDbContext<McbaDbContext>( options=>options.UseSqlServer("Server=rmit.australiaeast.cloudapp.azure.com;Database=s3768929_a2;uid=s3768929_a2;Password=abc123;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IUserDataWebServiceRepository<List<Customer>>, UserDataWebServiceRepository<List<Customer>>>();
 builder.Services.AddHttpClient<UserDataWebServiceRepository<List<Customer>>>();
 

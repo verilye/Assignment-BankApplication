@@ -1,3 +1,7 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebDevAss2.Models;
 public class BillPay{
 
     [Key, Required]
