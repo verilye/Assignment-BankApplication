@@ -10,23 +10,27 @@ public class Account
     [Key]
     [Required]
     [MaxLength(4), MinLength(4)]
-    required public int accountNumber{get;set;}
+    required public int AccountNumber{get;set;}
 
     [Required]
     [Column(TypeName = "char(1)")]
-    public char accountType{get;set;}
+    public char AccountType{get;set;}
 
     // Foreign Key
-    public int customerId{get;set;}
-    public ICollection<Transaction> transactions{get;set;}
+    public int CustomerId{get;set;}
+    public ICollection<Transaction>? Transactions{get;set;}
+
+    public ICollection<BillPay>? BillPays{get;set;}
+
+    public Customer? Customer{get;set;}
 
     // Login is like an object or a struct potentially, store it differently
 
     public Account(int accountNumber, char accountType, int customerId)
     {
-        this.accountNumber = accountNumber;
-        this.accountType = accountType;
-        this.customerId = customerId;
+        this.AccountNumber = accountNumber;
+        this.AccountType = accountType;
+        this.CustomerId = customerId;
     }
 
 }

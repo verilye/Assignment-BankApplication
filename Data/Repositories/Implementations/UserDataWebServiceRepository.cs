@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using Newtonsoft.Json;
+using WebDevAss2.Models;
 
 namespace WebDevAss2.Data.Repositories;
 
@@ -12,7 +13,7 @@ public class UserDataWebServiceRepository<T> : IUserDataWebServiceRepository<T>
         this.client = client;
     }
 
-    public async Task<T> FetchJsonData(string url)
+      public async Task<T> FetchJsonData(string url)
     {
         Console.WriteLine("Loading user data from api...");
         // Pull user data from passed in url and return it as a string
@@ -25,10 +26,5 @@ public class UserDataWebServiceRepository<T> : IUserDataWebServiceRepository<T>
 
         if (userData == null) { Console.WriteLine("Error: User data NOT loaded!"); }
         return userData!;
-    }
-
-    public void StoreJsonData(List<T> data){
-        Console.WriteLine("Implement me");
-        return;
     }
 }

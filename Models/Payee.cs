@@ -2,44 +2,47 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace WebDevAss2.Models
+{
+    public class Payee
+    {
+        [Key, Required]
+        public int PayeeID { get; set; }
 
-namespace WebDevAss2.Models;
+        [Required, MaxLength(50)]
+        public string Name { get; set; }
 
-public class Payee{
+        [Required, DataType(DataType.Text)]
+        [MaxLength(50), MinLength(1)]
+        public string Address { get; set; }
 
-    [Key, Required]
-    public int payeeID{get;set;}
+        [Required, DataType(DataType.Text)]
+        [MaxLength(40), MinLength(1)]
+        public string City { get; set; }
 
-    [Required, MaxLength(50)]
-    public string name{get;set;}
+        [Required, DataType(DataType.Text)]
+        [MaxLength(3), MinLength(2)]
+        public string State { get; set; }
 
-    [Required, DataType(DataType.Text)]
-    [MaxLength(50), MinLength(1)]
-    public string address{get;set;}
+        [Required, MaxLength(4), MinLength(4)]
+        public string PostCode { get; set; }
 
-    [Required,DataType(DataType.Text)]
-    [MaxLength(40), MinLength(1)]
-    public string city{get;set;}
+        [Required, RegularExpression(@"\(\d\d\)\s[0-9]+\s[0-9]+",
+            ErrorMessage = "Format needs to be (0X) XXXX XXXX")]
+        [MaxLength(12)]
+        public string Phone { get; set; }
 
-    [Required,DataType(DataType.Text)]
-    [MaxLength(3), MinLength(2)]
-    public string state{get;set;}
+        public ICollection<BillPay>? BillPays { get; set; }
 
-    [Required,MaxLength(4), MinLength(4)]
-    public string postCode{get;set;}
-
-    [Required, RegularExpression(@"\(\d\d\)\s[0-9]+\s[0-9]+", 
-        ErrorMessage = "Format needs to be (0X) XXXX XXXX")]
-    [MaxLength(12)]
-    public string phone{get;set;}
-
-    public Payee(int payeeID, string name, string address, string city, string state, string postCode, string phone){
-        this.payeeID = payeeID;
-        this.name = name;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.postCode = postCode;
-        this.phone = phone; 
+        public Payee(int payeeID, string name, string address, string city, string state, string postCode, string phone)
+        {
+            PayeeID = payeeID;
+            Name = name;
+            Address = address;
+            City = city;
+            State = state;
+            PostCode = postCode;
+            Phone = phone;
+        }
     }
 }

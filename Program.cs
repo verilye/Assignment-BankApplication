@@ -12,6 +12,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<McbaDbContext>( options=>options.UseSqlServer("Server=rmit.australiaeast.cloudapp.azure.com;Database=s3768929_a2;uid=s3768929_a2;Password=abc123;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IUserDataWebServiceRepository<List<Customer>>, UserDataWebServiceRepository<List<Customer>>>();
+builder.Services.AddScoped<IDataAccessRepository, DataAccessRepository>();
 builder.Services.AddHttpClient<UserDataWebServiceRepository<List<Customer>>>();
 
 
