@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace WebDevAss2.Models;
 
@@ -7,26 +9,30 @@ public class Transaction
 {
 
     [Key, Required]
-    public int transactionID{get;set;}
-
-    [Required, Range(0, int.MaxValue, ErrorMessage ="Must be a positive number")]
-    public float amount{get;set;}
+    public int transactionID { get; set; }
 
     [Required]
-    public char TransactionType{get;set;}
-
-    [Required, DataType(DataType.Date)]
-    public string transactionTimeUtc{get;set;}
-
-    [MaxLength(30)]
-    public string? comment{get;set;}
+    [Column(TypeName = "char")]
+    public char TransactionType { get; set; }
 
     // Foreign Key
-    public int accountNumber{get;set;}
+    public int accountNumber { get; set; }
     //Foreign Key
-    public int? destinationAccountNumber{get;set;}
+    public int? destinationAccountNumber { get; set; }
 
-    public Transaction(int transactionID, float amount, char transactionType, string transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
+    [Required, Range(0, int.MaxValue, ErrorMessage = "Must be a positive number")]
+    [Column(TypeName = "money")]
+    public float amount { get; set; }
+
+    [MaxLength(30)]
+    public string? comment { get; set; }
+
+    [Required]
+    [Column(TypeName = "datetime2")]
+    public DateTime transactionTimeUtc { get; set; }
+
+
+    public Transaction(int transactionID, float amount, char transactionType, DateTime transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
     {
         this.transactionID = transactionID;
         this.amount = amount;

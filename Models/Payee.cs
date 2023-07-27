@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace WebDevAss2.Models;
 
@@ -24,14 +26,14 @@ public class Payee{
     public string state{get;set;}
 
     [Required,MaxLength(4), MinLength(4)]
-    public int postCode{get;set;}
+    public string postCode{get;set;}
 
     [Required, RegularExpression(@"\(\d\d\)\s[0-9]+\s[0-9]+", 
         ErrorMessage = "Format needs to be (0X) XXXX XXXX")]
     [MaxLength(12)]
-    public int phone{get;set;}
+    public string phone{get;set;}
 
-    public Payee(int payeeID, string name, string address, string city, string state, int postCode, int phone){
+    public Payee(int payeeID, string name, string address, string city, string state, string postCode, string phone){
         this.payeeID = payeeID;
         this.name = name;
         this.address = address;

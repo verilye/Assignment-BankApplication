@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebDevAss2.Models;
 
 namespace WebDevAss2.Models;
@@ -12,6 +13,7 @@ public class Account
     required public int accountNumber{get;set;}
 
     [Required]
+    [Column(TypeName = "char(1)")]
     public char accountType{get;set;}
 
     // Foreign Key

@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace WebDevAss2.Models;
 public class Customer{
@@ -16,7 +18,7 @@ public class Customer{
     [MinLength(11), MaxLength(11)] 
     [RegularExpression(@"[0-9]+\s[0-9]+\s[0-9]+",
         ErrorMessage ="Format needs to be XXX XXX XXX")]
-    public int tfn{get;set;}
+    public string tfn{get;set;}
 
     [DataType(DataType.Text)]
     [MaxLength(50), MinLength(1)]
@@ -31,17 +33,17 @@ public class Customer{
     public string state{get;set;}
 
     [MaxLength(4), MinLength(4)]
-    public int postCode{get;set;}
+    public string postCode{get;set;}
 
     [RegularExpression(@"04\d\d\s\d\d\d\s\d\d\d", 
         ErrorMessage = "Format needs to be 04XX XXX XXX")]
     [MaxLength(12)]
-    public int mobile{get;set;}
+    public string mobile{get;set;}
 
     public ICollection<Account> accounts{get;set;}
     public Login login{get;set;}
 
-    public Customer(int customerId, string name, int tfn, string address, string city, string state, int mobile, int postCode)
+    public Customer(int customerId, string name, string tfn, string address, string city, string state, string mobile, string postCode)
     {
         this.customerId = customerId;
         this.name = name;
