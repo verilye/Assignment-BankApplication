@@ -27,7 +27,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // Paginate out user data here for proof of concept
         List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
         _dataAccess.StoreJsonData(customers);
 

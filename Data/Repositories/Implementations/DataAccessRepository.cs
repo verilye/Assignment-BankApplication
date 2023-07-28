@@ -15,8 +15,30 @@ public class DataAccessRepository : IDataAccessRepository
 
     public void StoreJsonData(List<Customer> data)
     {
-        _context.Customers.AddRange(data);
+        //Copy the data into new objects that dont offend bloody EFCORE
+
+        foreach (Customer customer in data)
+        {
+
+            _context.Customers.Add(customer);
+            
+            foreach(Account account in customer.Accounts){
+                account.CustomerId = customer.CustomerId;
+                _context.Accounts.Add(account);
+                foreach(Transaction transaction in account.Transactions){
+                    transaction.AccountNumber = account.AccountNumber;
+                    _context.Transactions.Add(transaction);
+                }
+            }
+
+            Login login = customer.Login;
+            login.CustomerId = customer.CustomerId;
+
+            _context.Logins.Add(login);
+        }
+
         _context.SaveChanges();
+
         return;
     }
 }

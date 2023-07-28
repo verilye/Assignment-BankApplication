@@ -6,7 +6,7 @@ namespace WebDevAss2.Models
 {
     public class Transaction
     {
-        [Key, Required]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionID { get; set; }
 
         [Required]
@@ -31,16 +31,5 @@ namespace WebDevAss2.Models
         public DateTime TransactionTimeUtc { get; set; }
 
         public Account? Account { get; set; }
-
-        public Transaction(int transactionID, float amount, char transactionType, DateTime transactionTimeUtc, string comment, int accountNumber, int? destinationAccountNumber)
-        {
-            TransactionID = transactionID;
-            Amount = amount;
-            TransactionType = transactionType;
-            TransactionTimeUtc = transactionTimeUtc;
-            Comment = comment;
-            AccountNumber = accountNumber;
-            DestinationAccountNumber = destinationAccountNumber;
-        }
     }
 }

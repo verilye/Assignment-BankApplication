@@ -34,15 +34,5 @@ namespace WebDevAss2.Models
 
         public ICollection<BillPay>? BillPays { get; set; }
 
-        public Payee(int payeeID, string name, string address, string city, string state, string postCode, string phone)
-        {
-            PayeeID = payeeID;
-            Name = name;
-            Address = address;
-            City = city;
-            State = state;
-            PostCode = postCode;
-            Phone = phone;
-        }
     }
 }

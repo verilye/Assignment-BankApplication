@@ -31,13 +31,4 @@ public class BillPay{
 
     public Account? Account{get;set;}
 
-    public BillPay(int billPayId, int accountNumber, int payeeId, float amount, DateTime scheduleTimeUtc, char period){
-        this.BillPayId = billPayId;
-        this.AccountNumber = accountNumber;
-        this.PayeeId = payeeId;
-        this.Amount = amount;
-        this.ScheduleTimeUtc = scheduleTimeUtc;
-        this.Period = period;
-    }
-
 }

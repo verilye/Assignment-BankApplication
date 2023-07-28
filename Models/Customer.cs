@@ -5,7 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebDevAss2.Models
 {
     public class Customer
-    {
+    {   
+        public int CustomerIdentity {get;set;}
+
         [Key]
         [Required, MaxLength(4), MinLength(4)]
         public int CustomerId { get; set; }
@@ -43,16 +45,5 @@ namespace WebDevAss2.Models
         public ICollection<Account>? Accounts { get; set; }
         public Login? Login { get; set; }
 
-        public Customer(int customerId, string name, string tfn, string address, string city, string state, string mobile, string postCode)
-        {
-            CustomerId = customerId;
-            Name = name;
-            Tfn = tfn;
-            Address = address;
-            City = city;
-            State = state;
-            Mobile = mobile;
-            PostCode = postCode;
-        }
     }
 }
