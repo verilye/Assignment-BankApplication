@@ -11,7 +11,7 @@ namespace WebDevAss2.Models
 
         [Required]
         [Column(TypeName = "char")]
-        public char TransactionType { get; set; }
+        public TransactionType TransactionType { get; set; }
 
         [Required] // Foreign Key
         public int AccountNumber { get; set; }

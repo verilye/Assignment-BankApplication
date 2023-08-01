@@ -25,7 +25,7 @@ public class BillPay{
 
     [Required]
     [Column(TypeName = "char(1)")]
-    public char Period{get;set;}
+    public Period Period{get;set;}
 
     public Payee? Payee{get;set;}
 

@@ -22,7 +22,7 @@ namespace WebDevAss2.Models
 
         [Required, DataType(DataType.Text)]
         [MaxLength(3), MinLength(2)]
-        public string State { get; set; }
+        public State State { get; set; }
 
         [Required, MaxLength(4), MinLength(4)]
         public string PostCode { get; set; }

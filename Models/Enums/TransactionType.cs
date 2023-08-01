@@ -1,5 +1,9 @@
 namespace WebDevAss2.Models;
 public enum TransactionType
 {
-    D, W, T, S, B
+    D = 0,
+    W = 1, 
+    T = 2, 
+    S = 3, 
+    B = 4
 }

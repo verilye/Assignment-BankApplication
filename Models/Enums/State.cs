@@ -2,5 +2,12 @@ namespace WebDevAss2.Models;
 
 public enum State
 {
-    QLD, NSW, ACT, VIC, WA, TAS, NT, SA
+    QLD = 0, 
+    NSW = 1, 
+    ACT = 2, 
+    VIC = 3, 
+    WA = 4, 
+    TAS = 5, 
+    NT = 6, 
+    SA = 7
 }

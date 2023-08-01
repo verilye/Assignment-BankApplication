@@ -14,7 +14,7 @@ public class Account
 
     [Required]
     [Column(TypeName = "char(1)")]
-    public char AccountType{get;set;}
+    public AccountType AccountType{get;set;}
 
     // Foreign Key
     public int CustomerId{get;set;}

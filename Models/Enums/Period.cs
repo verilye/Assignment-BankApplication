@@ -1,5 +1,5 @@
 namespace WebDevAss2.Models;
 public enum Period{
-        O, 
-        M
+        O =0, 
+        M =1
     }
