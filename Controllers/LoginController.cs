@@ -9,7 +9,8 @@ namespace WebDevAss2.Controllers;
 public class LoginController : Controller
 {
     private readonly ILoginRepository _loginRepository;
-    public LoginController(ILoginRepository loginRepository){
+    public LoginController(ILoginRepository loginRepository)
+    {
         _loginRepository = loginRepository;
     }
 
@@ -19,15 +20,22 @@ public class LoginController : Controller
     }
 
     [HttpPost]
-    public IActionResult SubmitForm(){
-
+    public IActionResult SubmitForm()
+    {
         string customerID = Request.Form["customerID"]!;
         string password = Request.Form["password"]!;
 
-        _loginRepository.ValidateLoginDetails(customerID, password);
-        
-        return View("Index");
+        bool result = _loginRepository.ValidateLoginDetails(customerID, password);
 
+        if (result == true)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            //Pass along error message here
+            return View("Index");
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

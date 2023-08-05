@@ -13,6 +13,11 @@ public class DataAccessRepository : IDataAccessRepository
         _context = context;
     }
 
+
+    public bool CheckForPopulatedDb(){
+        return _context.Customers.Any();
+
+    }
     public void InitUserData(List<Customer> data)
     {
         //Copy the data into new objects that dont offend bloody EFCORE
@@ -44,6 +49,11 @@ public class DataAccessRepository : IDataAccessRepository
 
     public Customer GetUserByCustomerId(int customerID){
         return _context.Customers
+            .FirstOrDefault(u=>u.CustomerId == customerID)!;
+    }
+
+    public Login GetLoginByCustomerId(int customerID){
+        return _context.Logins
             .FirstOrDefault(u=>u.CustomerId == customerID)!;
     }
 }

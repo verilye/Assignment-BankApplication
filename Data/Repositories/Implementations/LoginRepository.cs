@@ -18,18 +18,12 @@ public class LoginRepository : ILoginRepository
         {
             return false;
         }
-
         // get password from db
-        Customer customer = _dataAccess.GetUserByCustomerId(Int32.Parse(username));
+        Login customerLogin = _dataAccess.GetLoginByCustomerId(Int32.Parse(username));
 
-        Console.WriteLine(customer.CustomerId + " " + customer.Name + " " + customer.Address);
-
-        // Retrieve algorithm used, number of iterations, salt and hash from PasswordHash db field 
-        // (separated by $ characters and in the order listed here)
-        // string[] hashInfo = hashedPassword.Split('$');
-        // bool validated = new SimpleHash().Verify(password, hashedPassword);
-        // bool validated = new SimpleHash().Verify(password, hashedPassword);
-        return true;
+        bool validated = new SimpleHash().Verify(password, customerLogin.PasswordHash);
+        
+        return validated;
     }
 
 }

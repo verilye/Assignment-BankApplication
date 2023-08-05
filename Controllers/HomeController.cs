@@ -22,10 +22,12 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
-        _dataAccess.InitUserData(customers);
-
-        return View(customers[0]);
+        if (_dataAccess.CheckForPopulatedDb() == false)
+        {
+            List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
+            _dataAccess.InitUserData(customers);
+        }
+        return View();
     }
 
     public IActionResult Privacy()
