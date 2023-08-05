@@ -13,7 +13,7 @@ public class DataAccessRepository : IDataAccessRepository
         _context = context;
     }
 
-    public void StoreJsonData(List<Customer> data)
+    public void InitUserData(List<Customer> data)
     {
         //Copy the data into new objects that dont offend bloody EFCORE
 
@@ -22,16 +22,16 @@ public class DataAccessRepository : IDataAccessRepository
 
             _context.Customers.Add(customer);
             
-            foreach(Account account in customer.Accounts){
+            foreach(Account account in customer.Accounts!){
                 account.CustomerId = customer.CustomerId;
                 _context.Accounts.Add(account);
-                foreach(Transaction transaction in account.Transactions){
+                foreach(Transaction transaction in account.Transactions!){
                     transaction.AccountNumber = account.AccountNumber;
                     _context.Transactions.Add(transaction);
                 }
             }
 
-            Login login = customer.Login;
+            Login login = customer.Login!;
             login.CustomerId = customer.CustomerId;
 
             _context.Logins.Add(login);
@@ -40,5 +40,10 @@ public class DataAccessRepository : IDataAccessRepository
         _context.SaveChanges();
 
         return;
+    }
+
+    public Customer GetUserByCustomerId(int customerID){
+        return _context.Customers
+            .FirstOrDefault(u=>u.CustomerId == customerID)!;
     }
 }

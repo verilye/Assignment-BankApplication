@@ -2,14 +2,15 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
 using WebDevAss2.Data;
+using WebDevAss2.Data.Repositories;
 
 namespace WebDevAss2.Controllers;
 
 public class LoginController : Controller
 {
-    private readonly McbaDbContext _context;
-    public LoginController(McbaDbContext context){
-        _context = context;
+    private readonly ILoginRepository _loginRepository;
+    public LoginController(ILoginRepository loginRepository){
+        _loginRepository = loginRepository;
     }
 
     public IActionResult Index()
@@ -23,8 +24,8 @@ public class LoginController : Controller
         string customerID = Request.Form["customerID"]!;
         string password = Request.Form["password"]!;
 
-        Console.WriteLine("Im alive");
-        Console.WriteLine(customerID +" "+ password);
+        _loginRepository.ValidateLoginDetails(customerID, password);
+        
         return View("Index");
 
     }

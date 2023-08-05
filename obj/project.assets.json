@@ -676,6 +676,15 @@
           }
         }
       },
+      "SimpleHashing.Net/2.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/SimpleHashing.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/SimpleHashing.Net.dll": {}
+        }
+      },
       "System.Buffers/4.5.1": {
         "type": "package",
         "compile": {
@@ -2149,6 +2158,18 @@
         "packageIcon.png"
       ]
     },
+    "SimpleHashing.Net/2.1.0": {
+      "sha512": "mx9W9YjQxEP8Lma/RVbDsS0dHKV5lEb3vldWdxgvD4o625To0XtxWroNcDR8cPdtANgTTo9QKjryZzHDjbonhg==",
+      "type": "package",
+      "path": "simplehashing.net/2.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/SimpleHashing.Net.dll",
+        "simplehashing.net.2.1.0.nupkg.sha512",
+        "simplehashing.net.nuspec"
+      ]
+    },
     "System.Buffers/4.5.1": {
       "sha512": "Rw7ijyl1qqRS0YQD/WycNst8hUUMgrMH4FCn1nNm27M4VxchZ1js3fVjQaANHO5f3sN4isvP4a+Met9Y4YomAg==",
       "type": "package",
@@ -3504,7 +3525,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.9",
       "Microsoft.Extensions.DependencyInjection >= 7.0.0",
-      "Newtonsoft.Json >= 13.0.3"
+      "Newtonsoft.Json >= 13.0.3",
+      "SimpleHashing.Net >= 2.1.0"
     ]
   },
   "packageFolders": {
@@ -3571,6 +3593,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.3, )"
+          },
+          "SimpleHashing.Net": {
+            "target": "Package",
+            "version": "[2.1.0, )"
           }
         },
         "imports": [

@@ -72,3 +72,4 @@
 /home/connorlogan/Desktop/WebDevAss2/bin/Debug/net7.0/runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll
 /home/connorlogan/Desktop/WebDevAss2/bin/Debug/net7.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
 /home/connorlogan/Desktop/WebDevAss2/bin/Debug/net7.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/home/connorlogan/Desktop/WebDevAss2/bin/Debug/net7.0/SimpleHashing.Net.dll

@@ -4,7 +4,8 @@ namespace WebDevAss2.Data.Repositories;
 
 public interface IDataAccessRepository
 {
-    public void StoreJsonData(List<Customer> data);
+    public void InitUserData(List<Customer> data);
+    public Customer GetUserByCustomerId(int customerID);
 
 }
 

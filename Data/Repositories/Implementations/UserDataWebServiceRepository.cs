@@ -7,22 +7,22 @@ namespace WebDevAss2.Data.Repositories;
 
 public class UserDataWebServiceRepository<T> : IUserDataWebServiceRepository<T>
 {
-    HttpClient client;
+    private readonly HttpClient _client;
     public UserDataWebServiceRepository(HttpClient client)
     {
-        this.client = client;
+        _client = client;
     }
 
       public async Task<T> FetchJsonData(string url)
     {
         Console.WriteLine("Loading user data from api...");
         // Pull user data from passed in url and return it as a string
-        HttpResponseMessage response = await client.GetAsync(url);
+        HttpResponseMessage response = await _client.GetAsync(url);
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
 
         // deserialise Json 
-        T userData = JsonConvert.DeserializeObject<T>(responseBody);
+        T userData = JsonConvert.DeserializeObject<T>(responseBody)!;
 
         if (userData == null) { Console.WriteLine("Error: User data NOT loaded!"); }
         return userData!;

@@ -13,22 +13,17 @@ public class HomeController : Controller
     private readonly IDataAccessRepository _dataAccess;
     private readonly McbaDbContext _context;
 
-    public HomeController(
-        ILogger<HomeController> logger
-        , IUserDataWebServiceRepository<List<Customer>> jsonDataWebService
-        , IDataAccessRepository dataAccess
-        , McbaDbContext context)
+    public HomeController(ILogger<HomeController> logger, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService, IDataAccessRepository dataAccess)
     {
         _logger = logger;
         _jsonDataWebService = jsonDataWebService;
         _dataAccess = dataAccess;
-        _context = context;
     }
 
     public async Task<IActionResult> Index()
     {
         List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
-        _dataAccess.StoreJsonData(customers);
+        _dataAccess.InitUserData(customers);
 
         return View(customers[0]);
     }
