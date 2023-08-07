@@ -11,5 +11,7 @@ public class SideBarViewComponent : ViewComponent
         return View();
     }
 
+    
+
 
 }

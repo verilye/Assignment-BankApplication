@@ -17,5 +17,12 @@
     </div>
 </div>
 
-
-
+<script>
+    document.addEventListener('DOMContentLoaded',async function(){
+        var customerID = localStorage.getItem('customerID');
+        console.log(customerID);
+        if(customerID === null){
+            window.location.href= "/Login";
+        }
+    })
+</script>

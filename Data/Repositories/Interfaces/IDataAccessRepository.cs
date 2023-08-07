@@ -6,7 +6,7 @@ public interface IDataAccessRepository
 {
     public bool CheckForPopulatedDb();
     public void InitUserData(List<Customer> data);
-    public Customer GetUserByCustomerId(int customerID);
+    public Customer GetCustomerByCustomerId(int customerID);
     public Login GetLoginByCustomerId(int customerID);
 
 

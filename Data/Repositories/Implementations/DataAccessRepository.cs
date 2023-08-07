@@ -20,11 +20,8 @@ public class DataAccessRepository : IDataAccessRepository
     }
     public void InitUserData(List<Customer> data)
     {
-        //Copy the data into new objects that dont offend bloody EFCORE
-
         foreach (Customer customer in data)
         {
-
             _context.Customers.Add(customer);
             
             foreach(Account account in customer.Accounts!){
@@ -35,19 +32,16 @@ public class DataAccessRepository : IDataAccessRepository
                     _context.Transactions.Add(transaction);
                 }
             }
-
             Login login = customer.Login!;
             login.CustomerId = customer.CustomerId;
 
             _context.Logins.Add(login);
         }
-
         _context.SaveChanges();
-
         return;
     }
 
-    public Customer GetUserByCustomerId(int customerID){
+    public Customer GetCustomerByCustomerId(int customerID){
         return _context.Customers
             .FirstOrDefault(u=>u.CustomerId == customerID)!;
     }

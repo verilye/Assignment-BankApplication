@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
 using WebDevAss2.Data.Repositories;
 using WebDevAss2.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace WebDevAss2.Controllers;
-
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -18,6 +18,8 @@ public class HomeController : Controller
         _logger = logger;
         _jsonDataWebService = jsonDataWebService;
         _dataAccess = dataAccess;
+
+        
     }
 
     public async Task<IActionResult> Index()
@@ -28,6 +30,12 @@ public class HomeController : Controller
             _dataAccess.InitUserData(customers);
         }
         return View();
+    }
+
+    public ActionResult Logout()
+    {
+
+        return RedirectToAction("Index", "Login");
     }
 
     public IActionResult Privacy()

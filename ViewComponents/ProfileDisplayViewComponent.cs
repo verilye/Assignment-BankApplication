@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using WebDevAss2.Models;
 
 namespace WebDevAss2.ViewComponents;
 
@@ -10,6 +9,5 @@ public class ProfileDisplayViewComponent : ViewComponent
     {
         return View();
     }
-
-
+    
 }

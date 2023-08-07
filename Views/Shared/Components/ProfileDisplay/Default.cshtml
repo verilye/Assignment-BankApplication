@@ -8,5 +8,18 @@
         <span class="fs-4">Welcome Connor!</span>
     </div>
     <hr>
-    <a class="fs-5">Logout</a>
+    <a id = "Logout" href = "#" class="fs-5 btn btn-primary">Logout</a>
 </div>
+
+<script>
+    document.getElementById("Logout").addEventListener("click", async (event) =>{
+        event.preventDefault();
+        const response = await fetch("Home/Logout",{
+            method: "POST"
+        });
+        if(response.redirected){
+            localStorage.removeItem('customerID')
+            window.location.href= response.url;
+        }
+    });
+</script>
