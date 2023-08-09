@@ -8,21 +8,30 @@ public class LoginRepository : ILoginRepository
 {
     private readonly IDataAccessRepository _dataAccess;
 
-    public LoginRepository(IDataAccessRepository dataAccess){
+    public LoginRepository(IDataAccessRepository dataAccess)
+    {
         _dataAccess = dataAccess;
     }
 
     public bool ValidateLoginDetails(string username, string password)
     {
-        if (username == null || password == null)
+        bool validated = false;
+        Login? customerLogin = null;
+        if (username.Length == 0 || password.Length == 0)
         {
-            return false;
+            validated = false;
         }
-        // get password from db
-        Login customerLogin = _dataAccess.GetLoginByCustomerId(Int32.Parse(username));
+        else
+        {
+            // get password from db
+           customerLogin = _dataAccess.GetLoginByCustomerId(Int32.Parse(username));
+        }
 
-        bool validated = new SimpleHash().Verify(password, customerLogin.PasswordHash);
-        
+        if (customerLogin != null)
+        {
+            validated = new SimpleHash().Verify(password!, customerLogin.PasswordHash);
+        }
+
         return validated;
     }
 

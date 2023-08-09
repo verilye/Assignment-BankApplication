@@ -16,6 +16,9 @@
                 style="width:80%; margin-left:10%; border-radius:3rem;"
                 class="btn btn-primary my-4 p-2 my-3 fw-bold">Sign In</button>
         </form>
+        <div id="loginError" style="color:red">
+            Please enter a valid username and password
+        </div>
     </div>
     <div style="width:80%; margin-left:10%">
         <a>Dont have an account?<a>
@@ -24,6 +27,10 @@
 </div>
 
 <script>
+
+    var loginErrorDisplay = document.getElementById("loginError");
+    loginErrorDisplay.style.display = "none";    
+
     const loginForm = document.getElementById('loginForm');
     loginForm.addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -40,8 +47,8 @@
             console.log(customerID);
             localStorage.setItem('customerID', JSON.stringify(customerID));
             window.location.href = "/Home";
-        } else {
-            // Handle error message
+        } else if (response.status == 401) {
+            loginErrorDisplay.style.display = "block";
         }
     });
 

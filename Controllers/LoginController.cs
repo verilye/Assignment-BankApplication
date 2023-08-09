@@ -25,9 +25,8 @@ public class LoginController : Controller
     {
         string customerID = Request.Form["customerID"]!;
         string password = Request.Form["password"]!;
-
         bool result = _loginRepository.ValidateLoginDetails(customerID, password);
-
+        
         if (result == true)
         {
             return RedirectToAction("Index", "Home");
@@ -35,7 +34,7 @@ public class LoginController : Controller
         else
         {
             //Pass along error message here
-            return View("Index");
+            return StatusCode(401, "Bad username or password");
         }
     }
 
