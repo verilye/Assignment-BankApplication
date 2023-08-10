@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model Transaction
 
 
 <div id="home-page" class="row" height="100vh" width="100vw">
@@ -8,9 +9,11 @@
         @await Component.InvokeAsync("SideBar")
     </div>
     <div class="col-8">
-        <br>
-        <br>
-        <br>
+        <div id="depositView" class="d-block">@await Component.InvokeAsync("Deposit")</div>
+        <div id="withdrawView" class="d-none"> @await Component.InvokeAsync("Withdraw")</div>
+        <div id="transferView" class="d-none">@await Component.InvokeAsync("Transfer")</div>
+        <div id="myStatementsView" class="d-none"> @await Component.InvokeAsync("MyStatements")</div>
+        <div id="myProfileView" class="d-none">@await Component.InvokeAsync("MyProfile")</div>
     </div>
     <div class="col-2">
         @await Component.InvokeAsync("ProfileDisplay")
@@ -18,11 +21,12 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded',async function(){
+    document.addEventListener('DOMContentLoaded', async function () {
         var customerID = localStorage.getItem('customerID');
         console.log(customerID);
-        if(customerID === null){
-            window.location.href= "/Login";
+        if (customerID === null) {
+            window.location.href = "/Login";
         }
     })
+
 </script>

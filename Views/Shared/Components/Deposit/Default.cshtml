@@ -1,0 +1,22 @@
+@model Transaction
+<h3>Make a Deposit</h3>
+<form id="depositForm" method="post">
+    <div class="mb-3">
+        <label for="accountSelect" class="form-label">Select Account</label>
+        <select class="form-select" id="accountSelect">
+            <option selected disabled>Select an account</option>
+            <option value="account1">100</option>
+            <option value="account2">Account 2</option>
+            <option value="account3">Account 3</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="amount" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="amount" placeholder="Enter amount">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Deposit</button>
+    </div>
+</form>
+

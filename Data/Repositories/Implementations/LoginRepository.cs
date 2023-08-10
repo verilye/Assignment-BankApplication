@@ -23,7 +23,7 @@ public class LoginRepository : ILoginRepository
         }
         else
         {
-            // get password from db
+           // get password from db
            customerLogin = _dataAccess.GetLoginByCustomerId(Int32.Parse(username));
         }
 

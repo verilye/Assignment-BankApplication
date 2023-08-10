@@ -1,0 +1,37 @@
+@model Transaction
+
+<h2>Confirmation Page</h2>
+<p>Confirm your submission:</p>
+<!-- Display the submitted data -->
+<p>@Model.Amount: @Model.Amount</p>
+
+<!-- Form for final submission -->
+<form id="confirmationForm" asp-controller="Home" asp-action="Deposit" method="post">
+    <input type="hidden" asp-for="Amount" />
+    <input type="hidden" asp-for="Amount" />
+    <button type="submit">Confirm and Submit</button>
+</form>
+
+ @* <div class="modal fade" id="confirmationWindow" tabindex="-1" aria-labelledby="confirmationWindowLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationWindowLabel">ConfirmationWindow</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3>Confirmation</h3>
+                    <div>TransactionID : @Model.TransactionID|| null</div>
+                    <div>Transaction Type : @Model.TransactionType</div>
+                    <div> Account Number : @Model.AccountNumber</div>
+                    <div>DestinationAccountNumber : @Model.DestinationAccountNumber </div>
+                    <div>Amount : @Model.Amount</div>
+                    <div>Comment : @Model.Comment</div>
+                    <div>TransactionTimeUtc : @Model.TransactionTimeUtc</div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Deposit</button>
+                </div>
+            </div>
+        </div>
+    </div> *@
