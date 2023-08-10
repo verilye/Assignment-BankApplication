@@ -23,26 +23,21 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Deposit()
     {
-        Transaction transaction = new Transaction();
-        transaction.TransactionType = TransactionType.D;
-        transaction.AccountNumber = 1;
-        transaction.DestinationAccountNumber = 1;
-        transaction.Amount = 1;
-        transaction.Comment = "babadooey";
-        transaction.TransactionTimeUtc = DateTime.UtcNow;
-
-        return View("ConfirmationWindow", transaction);
+        //Implement ME
+        return View();
     }
 
     public async Task<IActionResult> Index()
     {
-         ViewData["DisplayConfirmationWindow"] = false;
+        ViewData["DisplayConfirmationWindow"] = false;
         if (_dataAccess.CheckForPopulatedDb() == false)
         {
             List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
             _dataAccess.InitUserData(customers);
         }
-        return View();
+
+        Transaction transaction = new Transaction();
+        return View(transaction);
     }
 
     public ActionResult Logout()

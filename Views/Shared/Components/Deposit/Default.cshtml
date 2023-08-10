@@ -1,22 +1,59 @@
 @model Transaction
 <h3>Make a Deposit</h3>
 <form id="depositForm" method="post">
-    <div class="mb-3">
+    <div class="form-group">
         <label for="accountSelect" class="form-label">Select Account</label>
-        <select class="form-select" id="accountSelect">
-            <option selected disabled>Select an account</option>
+        <select class="form-control" id="accountSelect" asp-for="AccountNumber">
+            <option value="" disabled selected>Select an account</option>
             <option value="account1">100</option>
             <option value="account2">Account 2</option>
             <option value="account3">Account 3</option>
         </select>
     </div>
-    <div class="mb-3">
+    <div class="form-group">
         <label for="amount" class="form-label">Amount</label>
-        <input type="number" class="form-control" id="amount" placeholder="Enter amount">
+        <input type="number" class="form-control" id="amount" asp-for="Amount" placeholder="Enter amount">
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Deposit</button>
     </div>
 </form>
+
+@await Component.InvokeAsync("ConfirmationWindow", new { transaction = Model })
+
+
+<script>
+    document.getElementById("depositForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        // Get form data
+        const accountSelect = document.getElementById("accountSelect");
+        const amountInput = document.getElementById("amount");
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].text;
+        const amount = parseFloat(amountInput.value);
+
+        // Create transaction object
+        const transaction = {
+            Account: selectedAccount,
+            Amount: amount,
+            // Add other properties as needed...
+        };
+
+        // Display ConfirmationWindow modal
+        displayConfirmationModal(transaction);
+    });
+
+    function displayConfirmationModal(transaction) {
+        const confirmationModal = new bootstrap.Modal(document.getElementById("confirmationWindow"));
+        const modalBody = document.querySelector("#confirmationWindow .modal-body");
+
+        // Populate modal content with transaction details
+        modalBody.innerHTML = '';
+        modalBody.innerHTML += `<p>Account: ${transaction.Account}</p><p>Amount: ${transaction.Amount}</p>`;
+        
+        // Show the modal
+        confirmationModal.show();
+    }
+</script>
 
