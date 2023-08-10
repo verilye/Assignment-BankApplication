@@ -21,29 +21,3 @@
         <button type="submit" class="btn btn-primary">Deposit</button>
     </div>
 </form>
-
-
-<script>
-    $(document).ready(function () {
-        $('#myModal').modal('show');
-
-        $('#myForm').submit(function (e) {
-            e.preventDefault();
-            $(this).ajaxSubmit({
-                success: function (result) {
-                    $('#myModal').modal('hide');
-                    $('#confirmationModal').modal('show');
-                }
-            });
-        });
-
-        $('#confirmationForm').submit(function (e) {
-            e.preventDefault();
-            $(this).ajaxSubmit({
-                success: function () {
-                    window.location.href = '@Url.Action("Index", "Home")';
-                }
-            });
-        });
-    });
-</script>

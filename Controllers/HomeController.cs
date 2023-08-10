@@ -11,7 +11,6 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
     private readonly IDataAccessRepository _dataAccess;
-    private readonly McbaDbContext _context;
 
     public HomeController(ILogger<HomeController> logger, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService, IDataAccessRepository dataAccess)
     {
@@ -21,10 +20,16 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Deposit()
+    public IActionResult Deposit(Transaction transaction)
     {
-        //Implement ME
-        return View();
+
+        Console.WriteLine("WE GOT AN OBJECT OVA HEAH");
+       
+        Console.WriteLine(transaction.Account);
+        Console.WriteLine(transaction.Amount);  
+        Console.WriteLine(transaction.Comment);
+
+        return RedirectToAction("Index","Home");
     }
 
     public async Task<IActionResult> Index()
@@ -36,7 +41,7 @@ public class HomeController : Controller
             _dataAccess.InitUserData(customers);
         }
 
-        Transaction transaction = new Transaction();
+        Transaction transaction = new();
         return View(transaction);
     }
 

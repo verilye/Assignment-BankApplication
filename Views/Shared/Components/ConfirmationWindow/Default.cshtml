@@ -9,16 +9,51 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div>TransactionID : @Model.TransactionID|| null</div>
+                <div>TransactionID : @Model.TransactionID</div>
                 <div>Transaction Type : @Model.TransactionType</div>
-                <div> Account Number : @Model.AccountNumber</div>
+                <div>Account Number : @Model.AccountNumber</div>
                 <div>DestinationAccountNumber : @Model.DestinationAccountNumber </div>
                 <div>Amount : @Model.Amount</div>
                 <div>Comment : @Model.Comment</div>
                 <div>TransactionTimeUtc : @Model.TransactionTimeUtc</div>
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Deposit</button>
+                <button id="submitTransactionButton" type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    
+    document.getElementById("submitTransactionButton").addEventListener("click", function () {
+        const transaction = {
+            TransactionType:'@Model.TransactionType',
+            AccountNumber: @Model.AccountNumber,
+            DestinationAccountNumber: '@Model.DestinationAccountNumber',
+            Amount: @Model.Amount,
+            Comment: '@Model.Comment',
+            TransactionTimeUtc:' @Model.TransactionTimeUtc',
+        };
+        console.log("click");
+        const route = '@ViewData["route"]';
+        submitTransaction(transaction, route);
+        
+    });
+
+    async function submitTransaction(transaction, route) {
+
+        console.log("pre send");
+        const response = await fetch(route, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(transaction),
+        });
+
+        console.log("post send");
+
+    }
+</script>

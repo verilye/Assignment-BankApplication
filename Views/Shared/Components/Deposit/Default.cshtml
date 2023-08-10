@@ -1,4 +1,8 @@
 @model Transaction
+@{
+    ViewData["route"] = "/Home/Deposit";
+}
+
 <h3>Make a Deposit</h3>
 <form id="depositForm" method="post">
     <div class="form-group">
@@ -14,46 +18,63 @@
         <label for="amount" class="form-label">Amount</label>
         <input type="number" class="form-control" id="amount" asp-for="Amount" placeholder="Enter amount">
     </div>
+    <div class="form-group">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea class="form-control" id="comment" asp-for="Comment" placeholder="Enter comment here"></textarea>
+    </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Deposit</button>
     </div>
 </form>
 
-@await Component.InvokeAsync("ConfirmationWindow", new { transaction = Model })
+@await Component.InvokeAsync("ConfirmationWindow", new { transaction = Model, route = "/Home/Deposit" })
 
 
 <script>
-    document.getElementById("depositForm").addEventListener("submit", async function(event) {
+     document.getElementById("depositForm").addEventListener("submit", async function (event) {
         event.preventDefault();
 
         // Get form data
         const accountSelect = document.getElementById("accountSelect");
         const amountInput = document.getElementById("amount");
-        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].text;
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
         const amount = parseFloat(amountInput.value);
+        const comment = document.getElementById("comment").value;
 
         // Create transaction object
         const transaction = {
-            Account: selectedAccount,
+            TransactionID: 0,
+            TransactionType: 'D',
+            AccountNumber: selectedAccount,
+            DestinationAccountNumber: null,
             Amount: amount,
-            // Add other properties as needed...
+            Comment: comment,
+            TransactionTimeUtc: new Date().toISOString(),
         };
 
         // Display ConfirmationWindow modal
         displayConfirmationModal(transaction);
     });
 
-    function displayConfirmationModal(transaction) {
+
+   function displayConfirmationModal(transaction) {
         const confirmationModal = new bootstrap.Modal(document.getElementById("confirmationWindow"));
         const modalBody = document.querySelector("#confirmationWindow .modal-body");
 
         // Populate modal content with transaction details
         modalBody.innerHTML = '';
-        modalBody.innerHTML += `<p>Account: ${transaction.Account}</p><p>Amount: ${transaction.Amount}</p>`;
-        
+        modalBody.innerHTML += ` <p>Transaction Type : ${transaction.TransactionType}</p>`;
+        modalBody.innerHTML += ` <p>Account Number : ${transaction.AccountNumber}</p>`;
+        modalBody.innerHTML += ` <p>DestinationAccountNumber : ${transaction.DestinationAccountNumber} </p>`;
+        modalBody.innerHTML += ` <p>Amount : ${transaction.Amount}</p>`;
+        modalBody.innerHTML += ` <p>Comment :${transaction.Comment}</p>`;
+        modalBody.innerHTML += ` <p>TransactionTimeUtc : ${transaction.TransactionTimeUtc}</p>`;
+
         // Show the modal
         confirmationModal.show();
     }
+
+    
 </script>
 
