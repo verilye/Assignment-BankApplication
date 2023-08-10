@@ -20,12 +20,12 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Deposit(Transaction transaction)
+    public IActionResult Deposit([FromForm]Transaction transaction)
     {
 
         Console.WriteLine("WE GOT AN OBJECT OVA HEAH");
        
-        Console.WriteLine(transaction.Account);
+        Console.WriteLine(transaction.AccountNumber);
         Console.WriteLine(transaction.Amount);  
         Console.WriteLine(transaction.Comment);
 

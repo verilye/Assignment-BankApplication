@@ -9,7 +9,7 @@
         <label for="accountSelect" class="form-label">Select Account</label>
         <select class="form-control" id="accountSelect" asp-for="AccountNumber">
             <option value="" disabled selected>Select an account</option>
-            <option value="account1">100</option>
+            <option value="2100">100</option>
             <option value="account2">Account 2</option>
             <option value="account3">Account 3</option>
         </select>
@@ -32,7 +32,7 @@
 
 
 <script>
-     document.getElementById("depositForm").addEventListener("submit", async function (event) {
+    document.getElementById("depositForm").addEventListener("submit", async function (event) {
         event.preventDefault();
 
         // Get form data
@@ -46,19 +46,20 @@
         const transaction = {
             TransactionID: 0,
             TransactionType: 'D',
-            AccountNumber: selectedAccount,
+            AccountNumber: 100,
             DestinationAccountNumber: null,
             Amount: amount,
             Comment: comment,
             TransactionTimeUtc: new Date().toISOString(),
         };
 
+
         // Display ConfirmationWindow modal
         displayConfirmationModal(transaction);
     });
 
 
-   function displayConfirmationModal(transaction) {
+    function displayConfirmationModal(transaction) {
         const confirmationModal = new bootstrap.Modal(document.getElementById("confirmationWindow"));
         const modalBody = document.querySelector("#confirmationWindow .modal-body");
 
@@ -75,6 +76,30 @@
         confirmationModal.show();
     }
 
-    
+    document.getElementById("submitTransactionButton").addEventListener("click", function () {
+
+        const accountSelect = document.getElementById("accountSelect");
+        const amountInput = document.getElementById("amount");
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
+        const amount = parseFloat(amountInput.value);
+        const comment = document.getElementById("comment").value;
+
+        // Create transaction object
+        const transaction = {
+            TransactionID: 0,
+            TransactionType: 'D',
+            AccountNumber: 100,
+            DestinationAccountNumber: null,
+            Amount: amount,
+            Comment: comment,
+            TransactionTimeUtc: new Date().toISOString(),
+        };
+
+        const route = '@ViewData["route"]';
+        submitTransaction(transaction, route);
+
+    });
+
+
 </script>
 

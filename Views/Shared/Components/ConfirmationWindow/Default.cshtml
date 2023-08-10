@@ -26,34 +26,22 @@
 </div>
 
 <script>
-    
-    document.getElementById("submitTransactionButton").addEventListener("click", function () {
-        const transaction = {
-            TransactionType:'@Model.TransactionType',
-            AccountNumber: @Model.AccountNumber,
-            DestinationAccountNumber: '@Model.DestinationAccountNumber',
-            Amount: @Model.Amount,
-            Comment: '@Model.Comment',
-            TransactionTimeUtc:' @Model.TransactionTimeUtc',
-        };
-        console.log("click");
-        const route = '@ViewData["route"]';
-        submitTransaction(transaction, route);
-        
-    });
 
     async function submitTransaction(transaction, route) {
 
-        console.log("pre send");
+        const formData = new FormData();
+
+        for (const key in transaction) {
+            if (transaction.hasOwnProperty(key)) {
+                formData.append(key, transaction[key]);
+            }
+        }
+
+
         const response = await fetch(route, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(transaction),
+            body: formData,
         });
-
-        console.log("post send");
 
     }
 </script>
