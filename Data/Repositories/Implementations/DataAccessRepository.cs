@@ -64,4 +64,11 @@ public class DataAccessRepository : IDataAccessRepository
         .Where(u=>u.CustomerId == customerID)
         .ToList();
     }
+
+    public List<Transaction> GetTransactionsByAccountNumber(int accountNumber){
+
+        return _context.Transactions
+            .Where(u=>u.AccountNumber == accountNumber)
+            .ToList();
+    }
 }

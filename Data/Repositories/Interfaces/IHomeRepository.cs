@@ -4,8 +4,7 @@ namespace WebDevAss2.Data.Repositories;
 public interface IHomeRepository{
 
    void InitialiseDB();
-
-   List<Account> FetchAccounts(int customerID);
+   List<AccountViewModel> FetchAccounts(int customerID);
    void ValidateAndStoreTransaction(Transaction transaction);
     
 };

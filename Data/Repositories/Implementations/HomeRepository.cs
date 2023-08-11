@@ -18,12 +18,35 @@ public class HomeRepository : IHomeRepository
         _jsonDataWebService = jsonDataWebService;
     }
 
-    public List<Account> FetchAccounts(int customerID)
+    public List<AccountViewModel> FetchAccounts(int customerID)
     {
-        return _dataAccess.GetAccountsByCustomerId(customerID);
+        List<AccountViewModel> accountsWithBalance = new();
+        List<Account> accounts = _dataAccess.GetAccountsByCustomerId(customerID);
+        if (accounts != null)
+        {
+            foreach (var account in accounts)
+            {
+                List<Transaction> transactions = _dataAccess.GetTransactionsByAccountNumber(account.AccountNumber);
+
+                float deposits = transactions!.Where(t => t.TransactionType == TransactionType.D
+                   || (t.TransactionType == TransactionType.T && t.DestinationAccountNumber == null)).Sum(t => t.Amount);
+                float withdraws = transactions!.Where(t => t.TransactionType == TransactionType.W
+                    || (t.TransactionType == TransactionType.T && t.DestinationAccountNumber != null)).Sum(t => t.Amount);
+
+                var accountViewModel = new AccountViewModel
+                {
+                    Account = account,
+                    Balance = deposits - withdraws
+                };
+
+                accountsWithBalance.Add(accountViewModel);
+            }
+        }
+        return accountsWithBalance;
     }
 
-    public async void InitialiseDB(){
+    public async void InitialiseDB()
+    {
         if (_dataAccess.CheckForPopulatedDb() == false)
         {
             List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
@@ -31,13 +54,12 @@ public class HomeRepository : IHomeRepository
         }
     }
 
-    
 
-    public void ValidateAndStoreTransaction(Transaction transaction){
 
-        // Add all business logic here
-
+    public void ValidateAndStoreTransaction(Transaction transaction)
+    {
         _dataAccess.StoreTransaction(transaction);
+
         return;
     }
 

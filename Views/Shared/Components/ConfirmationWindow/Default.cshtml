@@ -34,5 +34,10 @@
             body: formData,
         });
 
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        }
+
     }
 </script>

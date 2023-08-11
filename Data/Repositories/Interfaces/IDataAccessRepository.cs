@@ -10,6 +10,7 @@ public interface IDataAccessRepository
     public Login GetLoginByCustomerId(int customerID);
     public List<Account> GetAccountsByCustomerId(int customerID);
     public void StoreTransaction(Transaction transaction);
+    public List<Transaction> GetTransactionsByAccountNumber(int accountNumber);
 
 
 }

@@ -17,29 +17,30 @@ public class HomeController : Controller
     public HomeController(IHomeRepository homeRepository)
     {
         _homeRepository = homeRepository;
-        
-    }
 
-    [HttpPost]
-    public IActionResult Deposit([FromForm]Transaction transaction)
-    {
-
-        // _homeRepository.ValidateAndStoreTransaction(transaction);        
-
-        return RedirectToAction("Index","Home");
     }
 
     public ActionResult Index()
     {
         ClaimsPrincipal user = HttpContext.User;
         int customerID = Int32.Parse(user.Identity!.Name!);
-        
+
         // If DB is unpopulated, populate it
         _homeRepository.InitialiseDB();
         // Get a list of accounts to display in option menues
-        List<Account> accounts = _homeRepository.FetchAccounts(customerID);
+        List<AccountViewModel> accounts = _homeRepository.FetchAccounts(customerID);
 
         return View(accounts);
+
+    }
+
+
+    [HttpPost]
+    public IActionResult Deposit([FromForm] Transaction transaction)
+    {
+        _homeRepository.ValidateAndStoreTransaction(transaction);        
+
+        return RedirectToAction("Index", "Home");
     }
 
     public async Task<ActionResult> Logout()

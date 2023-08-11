@@ -1,18 +1,26 @@
-﻿@{
+﻿@model List<AccountViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
-@model List<Account>
 
 <div id="home-page" class="row" height="100vh" width="100vw">
     <div class="col-2">
         @await Component.InvokeAsync("SideBar")
     </div>
     <div class="col-8">
-        <div id="depositView" class="d-block">@await Component.InvokeAsync("Deposit")</div>
-        <div id="withdrawView" class="d-none"> @await Component.InvokeAsync("Withdraw")</div>
-        <div id="transferView" class="d-none">@await Component.InvokeAsync("Transfer")</div>
-        <div id="myStatementsView" class="d-none"> @await Component.InvokeAsync("MyStatements")</div>
-        <div id="myProfileView" class="d-none">@await Component.InvokeAsync("MyProfile")</div>
+        <div class="row" id="sidebar-viewport">
+            <div id="depositView" class="d-block">@await Component.InvokeAsync("Deposit")</div>
+            <div id="withdrawView" class="d-none"> @await Component.InvokeAsync("Withdraw")</div>
+            <div id="transferView" class="d-none">@await Component.InvokeAsync("Transfer")</div>
+            <div id="myStatementsView" class="d-none"> @await Component.InvokeAsync("MyStatements")</div>
+            <div id="myProfileView" class="d-none">@await Component.InvokeAsync("MyProfile")</div>
+        </div>
+        <div class="row" id="account-display">
+            @foreach (var item in Model)
+            {
+               <div> @item.Account.AccountNumber :  @item.Balance</div>
+            }
+        </div>
     </div>
     <div class="col-2">
         @await Component.InvokeAsync("ProfileDisplay")
