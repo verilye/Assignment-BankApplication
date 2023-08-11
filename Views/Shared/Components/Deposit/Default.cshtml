@@ -1,4 +1,4 @@
-@model Transaction
+@model List<Account>
 @{
     ViewData["route"] = "/Home/Deposit";
 }
@@ -7,7 +7,7 @@
 <form id="depositForm" method="post">
     <div class="form-group">
         <label for="accountSelect" class="form-label">Select Account</label>
-        <select class="form-control" id="accountSelect" asp-for="AccountNumber">
+        <select class="form-control" id="accountSelect">
             <option value="" disabled selected>Select an account</option>
             <option value="2100">100</option>
             <option value="account2">Account 2</option>
@@ -16,11 +16,11 @@
     </div>
     <div class="form-group">
         <label for="amount" class="form-label">Amount</label>
-        <input type="number" class="form-control" id="amount" asp-for="Amount" placeholder="Enter amount">
+        <input type="number" class="form-control" id="amount" placeholder="Enter amount">
     </div>
     <div class="form-group">
         <label for="comment" class="form-label">Comment</label>
-        <textarea class="form-control" id="comment" asp-for="Comment" placeholder="Enter comment here"></textarea>
+        <textarea class="form-control" id="comment" placeholder="Enter comment here"></textarea>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

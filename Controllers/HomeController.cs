@@ -2,47 +2,39 @@
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
 using WebDevAss2.Data.Repositories;
-using WebDevAss2.Data;
-using Microsoft.AspNetCore.Http;
+
 
 namespace WebDevAss2.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
-    private readonly IDataAccessRepository _dataAccess;
+    
+    private readonly IHomeRepository _homeRepository;
 
-    public HomeController(ILogger<HomeController> logger, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService, IDataAccessRepository dataAccess)
+    public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository)
     {
         _logger = logger;
-        _jsonDataWebService = jsonDataWebService;
-        _dataAccess = dataAccess;
+        _homeRepository = homeRepository;
+        
     }
 
     [HttpPost]
     public IActionResult Deposit([FromForm]Transaction transaction)
     {
 
-        Console.WriteLine("WE GOT AN OBJECT OVA HEAH");
-       
-        Console.WriteLine(transaction.AccountNumber);
-        Console.WriteLine(transaction.Amount);  
-        Console.WriteLine(transaction.Comment);
+        // _homeRepository.ValidateAndStoreTransaction(transaction);        
 
         return RedirectToAction("Index","Home");
     }
 
-    public async Task<IActionResult> Index()
+    public ActionResult Index()
     {
-        ViewData["DisplayConfirmationWindow"] = false;
-        if (_dataAccess.CheckForPopulatedDb() == false)
-        {
-            List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
-            _dataAccess.InitUserData(customers);
-        }
+        // If DB is unpopulated, populate it
+        _homeRepository.InitialiseDB();
+        // Get a list of accounts to display in option menues
+        List<Account> accounts = _homeRepository.FetchAccounts();
 
-        Transaction transaction = new();
-        return View(transaction);
+        return View(accounts);
     }
 
     public ActionResult Logout()

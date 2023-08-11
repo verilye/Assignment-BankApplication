@@ -14,6 +14,7 @@ builder.Services.AddDbContext<McbaDbContext>(options => options.UseSqlServer("Se
 builder.Services.AddScoped<IUserDataWebServiceRepository<List<Customer>>, UserDataWebServiceRepository<List<Customer>>>();
 builder.Services.AddScoped<IDataAccessRepository, DataAccessRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IHomeRepository, HomeRepository>();
 builder.Services.AddHttpClient<UserDataWebServiceRepository<List<Customer>>>();
 
 var app = builder.Build();

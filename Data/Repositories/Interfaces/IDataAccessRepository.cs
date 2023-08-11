@@ -8,6 +8,8 @@ public interface IDataAccessRepository
     public void InitUserData(List<Customer> data);
     public Customer GetCustomerByCustomerId(int customerID);
     public Login GetLoginByCustomerId(int customerID);
+    public List<Account> GetAccountsByCustomerId(int customerID);
+    public void StoreTransaction(Transaction transaction);
 
 
 }

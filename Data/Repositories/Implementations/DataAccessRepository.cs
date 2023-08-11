@@ -50,4 +50,18 @@ public class DataAccessRepository : IDataAccessRepository
         return _context.Logins
             .FirstOrDefault(u=>u.CustomerId == customerID)!;
     }
+
+    public void StoreTransaction(Transaction transaction)
+    {
+        _context.Transactions
+        .Add(transaction);
+        _context.SaveChanges();
+    }
+
+    public List<Account> GetAccountsByCustomerId(int customerID)
+    {
+        return _context.Accounts
+        .Where(u=>u.CustomerId == customerID)
+        .ToList();
+    }
 }
