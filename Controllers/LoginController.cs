@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
-using WebDevAss2.Data;
 using WebDevAss2.Data.Repositories;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace WebDevAss2.Controllers;
 
@@ -21,7 +22,7 @@ public class LoginController : Controller
     }
 
     [HttpPost]
-    public IActionResult SubmitForm()
+    public async Task<IActionResult> SubmitForm()
     {
         string customerID = Request.Form["customerID"]!;
         string password = Request.Form["password"]!;
@@ -29,6 +30,19 @@ public class LoginController : Controller
         
         if (result == true)
         {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, customerID),
+            };
+            
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
             return RedirectToAction("Index", "Home");
         }
         else

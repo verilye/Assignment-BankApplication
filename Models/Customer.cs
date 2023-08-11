@@ -14,7 +14,7 @@ namespace WebDevAss2.Models
 
         [DataType(DataType.Text)]
         [Required, MaxLength(50), MinLength(1)]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [DataType(DataType.Text)]
         [MinLength(11), MaxLength(11)]

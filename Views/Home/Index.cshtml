@@ -1,8 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model Transaction
-
+@model List<Account>
 
 <div id="home-page" class="row" height="100vh" width="100vw">
     <div class="col-2">
@@ -19,14 +18,3 @@
         @await Component.InvokeAsync("ProfileDisplay")
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', async function () {
-        var customerID = localStorage.getItem('customerID');
-        console.log(customerID);
-        if (customerID === null) {
-            window.location.href = "/Login";
-        }
-    })
-
-</script>

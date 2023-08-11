@@ -2,18 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using WebDevAss2.Models;
 using WebDevAss2.Data.Repositories;
-
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebDevAss2.Controllers;
+
+[Authorize]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    
     private readonly IHomeRepository _homeRepository;
 
-    public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository)
+    public HomeController(IHomeRepository homeRepository)
     {
-        _logger = logger;
         _homeRepository = homeRepository;
         
     }
@@ -29,17 +31,20 @@ public class HomeController : Controller
 
     public ActionResult Index()
     {
+        ClaimsPrincipal user = HttpContext.User;
+        int customerID = Int32.Parse(user.Identity!.Name!);
+        
         // If DB is unpopulated, populate it
         _homeRepository.InitialiseDB();
         // Get a list of accounts to display in option menues
-        List<Account> accounts = _homeRepository.FetchAccounts();
+        List<Account> accounts = _homeRepository.FetchAccounts(customerID);
 
         return View(accounts);
     }
 
-    public ActionResult Logout()
+    public async Task<ActionResult> Logout()
     {
-
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Login");
     }
 

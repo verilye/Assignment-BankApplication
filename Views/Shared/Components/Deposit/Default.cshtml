@@ -7,16 +7,16 @@
 <form id="depositForm" method="post">
     <div class="form-group">
         <label for="accountSelect" class="form-label">Select Account</label>
-        <select class="form-control" id="accountSelect">
+        <select class="form-control" id="accountSelect" required>
             <option value="" disabled selected>Select an account</option>
-            <option value="2100">100</option>
-            <option value="account2">Account 2</option>
-            <option value="account3">Account 3</option>
+            @foreach(var item in Model){
+                <option value=@item.AccountNumber>@item.AccountNumber</option>
+            }
         </select>
     </div>
     <div class="form-group">
         <label for="amount" class="form-label">Amount</label>
-        <input type="number" class="form-control" id="amount" placeholder="Enter amount">
+        <input type="number" class="form-control" id="amount" placeholder="Enter amount" required min="1">
     </div>
     <div class="form-group">
         <label for="comment" class="form-label">Comment</label>
@@ -28,7 +28,7 @@
     </div>
 </form>
 
-@await Component.InvokeAsync("ConfirmationWindow", new { transaction = Model, route = "/Home/Deposit" })
+@await Component.InvokeAsync("ConfirmationWindow", new {route = "/Home/Deposit" })
 
 
 <script>

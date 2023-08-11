@@ -10,7 +10,7 @@ namespace WebDevAss2.Models
         [Required]
         [Column(TypeName = "char")]
         [MaxLength(8), MinLength(8)]
-        public string LoginId { get; set; }
+        public string LoginId { get; set; } = default!;
 
         // Foreign Key
         public int CustomerId { get; set; }
@@ -18,7 +18,7 @@ namespace WebDevAss2.Models
         [Required]
         [Column(TypeName = "char")]
         [MaxLength(94), MinLength(3)]
-        public string PasswordHash { get; set; }
+        public string PasswordHash { get; set; } = default!;
 
         public Customer? Customer {get;set;}
 

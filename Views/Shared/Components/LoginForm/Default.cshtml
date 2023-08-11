@@ -43,9 +43,6 @@
         });
 
         if (response.redirected) {
-            var customerID = document.getElementById('customerID').value;
-            console.log(customerID);
-            localStorage.setItem('customerID', JSON.stringify(customerID));
             window.location.href = "/Home";
         } else if (response.status == 401) {
             loginErrorDisplay.style.display = "block";
