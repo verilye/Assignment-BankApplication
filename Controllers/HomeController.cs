@@ -34,11 +34,18 @@ public class HomeController : Controller
 
     }
 
-
     [HttpPost]
     public IActionResult Deposit([FromForm] Transaction transaction)
     {
         _homeRepository.ValidateAndStoreTransaction(transaction);        
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public IActionResult Withdraw([FromForm] Transaction transaction)
+    {
+        _homeRepository.ValidateAndStoreTransaction(transaction);
 
         return RedirectToAction("Index", "Home");
     }

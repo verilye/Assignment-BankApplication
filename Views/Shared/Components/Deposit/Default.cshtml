@@ -6,21 +6,22 @@
 <h3>Make a Deposit</h3>
 <form id="depositForm" method="post">
     <div class="form-group">
-        <label for="accountSelect" class="form-label">Select Account</label>
-        <select class="form-control" id="accountSelect" required>
+        <label for="deposit-accountSelect" class="form-label">Select Account</label>
+        <select class="form-control" id="deposit-accountSelect" required>
             <option type="number" value="" disabled selected>Select an account</option>
-            @foreach(var item in Model){
+            @foreach (var item in Model)
+            {
                 <option value=@item.Account.AccountNumber>@item.Account.AccountNumber</option>
             }
         </select>
     </div>
     <div class="form-group">
-        <label for="amount" class="form-label">Amount</label>
-        <input type="number" step = "0.01" class="form-control" id="amount" placeholder="Enter amount" required min="0.1">
+        <label for="deposit-amount" class="form-label">Amount</label>
+        <input type="number" step="0.01" class="form-control" id="deposit-amount" placeholder="Enter amount" required min="0.1">
     </div>
     <div class="form-group">
-        <label for="comment" class="form-label">Comment</label>
-        <textarea class="form-control" id="comment" placeholder="Enter comment here"></textarea>
+        <label for="deposit-comment" class="form-label">Comment</label>
+        <textarea class="form-control" id="deposit-comment" placeholder="Enter comment here"></textarea>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -28,19 +29,34 @@
     </div>
 </form>
 
-@await Component.InvokeAsync("ConfirmationWindow", new {route = "/Home/Deposit" })
-
+<div class="modal fade" id="confirmDeposit" tabindex="10" aria-labelledby="confirmDepositLabel" aria-hidden="true"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDepositLabel">Confirm Transaction?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="submitDepositButton" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     document.getElementById("depositForm").addEventListener("submit", async function (event) {
         event.preventDefault();
 
         // Get form data
-        const accountSelect = document.getElementById("accountSelect");
-        const amountInput = document.getElementById("amount");
+        const accountSelect = document.getElementById("deposit-accountSelect");
+        const amountInput = document.getElementById("deposit-amount");
         const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
         const amount = parseFloat(amountInput.value);
-        const comment = document.getElementById("comment").value;
+        const comment = document.getElementById("deposit-comment").value;
 
         // Create transaction object
         const transaction = {
@@ -55,13 +71,13 @@
 
 
         // Display ConfirmationWindow modal
-        displayConfirmationModal(transaction);
+        displayDepositModal(transaction);
     });
 
 
-    function displayConfirmationModal(transaction) {
-        const confirmationModal = new bootstrap.Modal(document.getElementById("confirmationWindow"));
-        const modalBody = document.querySelector("#confirmationWindow .modal-body");
+    function displayDepositModal(transaction) {
+        const depositModal = new bootstrap.Modal(document.getElementById("confirmDeposit"));
+        const modalBody = document.querySelector("#confirmDeposit .modal-body");
 
         // Populate modal content with transaction details
         modalBody.innerHTML = '';
@@ -73,16 +89,16 @@
         modalBody.innerHTML += ` <p>TransactionTimeUtc : ${transaction.TransactionTimeUtc}</p>`;
 
         // Show the modal
-        confirmationModal.show();
+        $('#confirmDeposit').modal('toggle');
     }
 
-    document.getElementById("submitTransactionButton").addEventListener("click", function () {
+    document.getElementById("submitDepositButton").addEventListener("click", function () {
 
-        const accountSelect = document.getElementById("accountSelect");
-        const amountInput = document.getElementById("amount");
+        const accountSelect = document.getElementById("deposit-accountSelect");
+        const amountInput = document.getElementById("deposit-amount");
         const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
         const amount = parseFloat(amountInput.value);
-        const comment = document.getElementById("comment").value;
+        const comment = document.getElementById("deposit-comment").value;
 
         // Create transaction object
         const transaction = {
@@ -96,10 +112,30 @@
         };
 
         const route = '@ViewData["route"]';
-        submitTransaction(transaction, route);
+        submitDeposit(transaction, route);
 
     });
 
+    async function submitDeposit(transaction, route) {
+
+        const formData = new FormData();
+
+        for (const key in transaction) {
+            if (transaction.hasOwnProperty(key)) {
+                formData.append(key, transaction[key]);
+            }
+        }
+
+        const response = await fetch(route, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        }
+
+    }
 
 </script>
 

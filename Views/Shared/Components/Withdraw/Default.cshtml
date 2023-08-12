@@ -1,22 +1,148 @@
-<h3>Withdraw</h3>
+@model List<AccountViewModel>
+@{
+    ViewData["route"] = "/Home/Withdraw";
+}
 
-<form id="depositForm" method="post">
-    <div class="mb-3">
-        <label for="accountSelect" class="form-label">Select Account</label>
-        <select class="form-select" id="accountSelect">
-            <option selected disabled>Select an account</option>
-            <option value="account1">100</option>
-            <option value="account2">Account 2</option>
-            <option value="account3">Account 3</option>
+<h3>Make a Withdrawal</h3>
+<form id="withdrawForm" method="post">
+    <div class="form-group">
+        <label for="withdraw-accountSelect" class="form-label">Select Account</label>
+        <select class="form-control" id="withdraw-accountSelect" required>
+            <option type="number" value="" disabled selected>Select an account</option>
+            @foreach (var item in Model)
+            {
+                <option value=@item.Account.AccountNumber data-balance=@item.Balance>@item.Account.AccountNumber</option>
+            }
         </select>
     </div>
-    <div class="mb-3">
-        <label for="amount" class="form-label">Amount</label>
-        <input type="number" class="form-control" id="amount" placeholder="Enter amount">
+    <div class="form-group">
+        <label for="withdraw-amount" class="form-label">Amount</label>
+        <input type="number" step="0.01" class="form-control" id="withdraw-amount" placeholder="Enter amount" required min="0.1">
+    </div>
+    <div class="form-group">
+        <label for="withdraw-comment" class="form-label">Comment</label>
+        <textarea class="form-control" id="withdraw-comment" placeholder="Enter comment here"></textarea>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Deposit</button>
+        <button type="submit" class="btn btn-primary" >Withdraw</button>
     </div>
 </form>
+
+<div class="modal" id="confirmWithdraw" tabindex="10" aria-labelledby="confirmWithdrawLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmWithdrawLabel">Confirm Transaction?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="submitWithdrawButton" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.getElementById("withdraw-accountSelect").addEventListener("change", function (event) {
+        const selectedOption = this.options[this.selectedIndex];
+        const selectedAccountBalance = parseFloat(selectedOption.getAttribute("data-balance"));
+
+        document.getElementById("withdraw-amount").max = selectedAccountBalance;
+    });
+
+    document.getElementById("withdrawForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        // Get form data
+        const accountSelect = document.getElementById("withdraw-accountSelect");
+        const amountInput = document.getElementById("withdraw-amount");
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
+        const amount = parseFloat(amountInput.value);
+        const comment = document.getElementById("withdraw-comment").value;
+
+        // Create transaction object
+        const transaction = {
+            TransactionID: 0,
+            TransactionType: 'W',
+            AccountNumber: selectedAccount,
+            DestinationAccountNumber: null,
+            Amount: amount,
+            Comment: comment,
+            TransactionTimeUtc: new Date().toISOString(),
+        };
+
+        // Display ConfirmationWindow modal
+        displayWithdrawModal(transaction);
+    });
+
+
+    function displayWithdrawModal(transaction) {
+        const withdrawModal = new bootstrap.Modal(document.getElementById("confirmWithdraw"));
+        const modalBody = document.querySelector("#confirmWithdraw .modal-body");
+
+        // Populate modal content with transaction details
+        modalBody.innerHTML = '';
+        modalBody.innerHTML += ` <p>Transaction Type : ${transaction.TransactionType}</p>`;
+        modalBody.innerHTML += ` <p>Account Number : ${transaction.AccountNumber}</p>`;
+        modalBody.innerHTML += ` <p>DestinationAccountNumber : ${transaction.DestinationAccountNumber} </p>`;
+        modalBody.innerHTML += ` <p>Amount : ${transaction.Amount}</p>`;
+        modalBody.innerHTML += ` <p>Comment :${transaction.Comment}</p>`;
+        modalBody.innerHTML += ` <p>TransactionTimeUtc : ${transaction.TransactionTimeUtc}</p>`;
+
+        // Show the modal
+        $('#confirmWithdraw').modal('toggle');
+    }
+
+    document.getElementById("submitWithdrawButton").addEventListener("click", function () {
+
+        const accountSelect = document.getElementById("withdraw-accountSelect");
+        const amountInput = document.getElementById("withdraw-amount");
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
+        const amount = parseFloat(amountInput.value);
+        const comment = document.getElementById("withdraw-comment").value;
+
+        // Create transaction object
+        const transaction = {
+            TransactionID: 0,
+            TransactionType: 'W',
+            AccountNumber: selectedAccount,
+            DestinationAccountNumber: null,
+            Amount: amount,
+            Comment: comment,
+            TransactionTimeUtc: new Date().toISOString(),
+        };
+
+        const route = '@ViewData["route"]';
+        submitWithdraw(transaction, route);
+
+    });
+
+    async function submitWithdraw(transaction, route) {
+
+        const formData = new FormData();
+
+        for (const key in transaction) {
+            if (transaction.hasOwnProperty(key)) {
+                formData.append(key, transaction[key]);
+            }
+        }
+
+        const response = await fetch(route, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        }
+
+    }
+
+
+</script>
 

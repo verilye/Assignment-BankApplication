@@ -15187,38 +15187,6 @@
         }
       },
       {
-        "HashCode": -1145641685,
-        "Kind": "MVC.ViewComponent",
-        "Name": "__Generated__ConfirmationWindowViewComponentTagHelper",
-        "AssemblyName": "WebDevAss2",
-        "CaseSensitive": false,
-        "TagMatchingRules": [
-          {
-            "TagName": "vc:confirmation-window",
-            "Attributes": [
-              {
-                "Name": "transaction"
-              }
-            ]
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "MVC.ViewComponent",
-            "Name": "transaction",
-            "TypeName": "WebDevAss2.Models.Transaction",
-            "Metadata": {
-              "Common.PropertyName": "transaction"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "ITagHelper",
-          "Common.TypeName": "__Generated__ConfirmationWindowViewComponentTagHelper",
-          "MVC.ViewComponent.Name": "ConfirmationWindow"
-        }
-      },
-      {
         "HashCode": 65801019,
         "Kind": "MVC.ViewComponent",
         "Name": "__Generated__MyStatementsViewComponentTagHelper",
@@ -18808,11 +18776,6 @@
   },
   "RootNamespace": "WebDevAss2",
   "Documents": [
-    {
-      "FilePath": "/home/connorlogan/Desktop/WebDevAss2/Views/Shared/Components/ConfirmationWindow/Default.cshtml",
-      "TargetPath": "Views\\Shared\\Components\\ConfirmationWindow\\Default.cshtml",
-      "FileKind": "mvc"
-    },
     {
       "FilePath": "/home/connorlogan/Desktop/WebDevAss2/Views/Login/Index.cshtml",
       "TargetPath": "Views\\Login\\Index.cshtml",

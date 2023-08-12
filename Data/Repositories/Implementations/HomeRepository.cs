@@ -54,8 +54,6 @@ public class HomeRepository : IHomeRepository
         }
     }
 
-
-
     public void ValidateAndStoreTransaction(Transaction transaction)
     {
         _dataAccess.StoreTransaction(transaction);
