@@ -37,7 +37,7 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Deposit([FromForm] Transaction transaction)
     {
-        _homeRepository.ValidateAndStoreTransaction(transaction);        
+        _homeRepository.ValidateAndStoreTransaction(transaction);
 
         return RedirectToAction("Index", "Home");
     }
@@ -50,22 +50,37 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    public IActionResult Transfer([FromForm] Transaction transaction){
-        
-        Transaction destinationTransaction = new Transaction{
-            TransactionID = transaction.TransactionID,
-            TransactionType = TransactionType.T,
-            AccountNumber = (int)transaction.DestinationAccountNumber!,
-            DestinationAccountNumber = null, 
-            Amount = transaction.Amount,
-            Comment = transaction.Comment,
-            TransactionTimeUtc = transaction.TransactionTimeUtc,
-        };
+    public IActionResult Transfer([FromForm] Transaction transaction)
+    {
 
-        _homeRepository.ValidateAndStoreTransaction(transaction);
-        _homeRepository.ValidateAndStoreTransaction(destinationTransaction);
-        
-        return RedirectToAction("Index", "Home");
+        if (transaction.DestinationAccountNumber == null)
+        {
+            return StatusCode(401, "DestinationAccount is null");
+        }
+        else if (_homeRepository.ConfirmDestinationAccountExists((int)transaction.DestinationAccountNumber))
+        {
+            Transaction destinationTransaction = new Transaction
+            {
+                TransactionID = transaction.TransactionID,
+                TransactionType = TransactionType.T,
+                AccountNumber = (int)transaction.DestinationAccountNumber!,
+                DestinationAccountNumber = null,
+                Amount = transaction.Amount,
+                Comment = transaction.Comment,
+                TransactionTimeUtc = transaction.TransactionTimeUtc,
+            };
+
+            _homeRepository.ValidateAndStoreTransaction(transaction);
+            _homeRepository.ValidateAndStoreTransaction(destinationTransaction);
+
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            //Pass along error message here
+            return StatusCode(401, "Bad destination account");
+        }
+
     }
 
     public async Task<ActionResult> Logout()

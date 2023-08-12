@@ -5,6 +5,7 @@ namespace WebDevAss2.Data.Repositories;
 public interface IDataAccessRepository
 {
     public bool CheckForPopulatedDb();
+    public bool CheckForAccount(int accountNumber);
     public void InitUserData(List<Customer> data);
     public Customer GetCustomerByCustomerId(int customerID);
     public Login GetLoginByCustomerId(int customerID);

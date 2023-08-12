@@ -18,6 +18,11 @@ public class DataAccessRepository : IDataAccessRepository
         return _context.Customers.Any();
 
     }
+
+    public bool CheckForAccount(int accountNumber){
+        return _context.Accounts.Any(a => a.AccountNumber == accountNumber);
+         
+    }
     public void InitUserData(List<Customer> data)
     {
         foreach (Customer customer in data)

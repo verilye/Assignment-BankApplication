@@ -61,4 +61,9 @@ public class HomeRepository : IHomeRepository
         return;
     }
 
+    public bool ConfirmDestinationAccountExists(int accountNumber){
+
+        return _dataAccess.CheckForAccount(accountNumber);
+    }
+
 }

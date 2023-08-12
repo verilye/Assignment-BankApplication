@@ -6,5 +6,6 @@ public interface IHomeRepository{
    void InitialiseDB();
    List<AccountViewModel> FetchAccounts(int customerID);
    void ValidateAndStoreTransaction(Transaction transaction);
+   public bool ConfirmDestinationAccountExists(int accountNumber);
     
 };

@@ -22,7 +22,8 @@
     </div>
     <div class="form-group">
         <label for="transfer-destination" class="form-label">Destination Account</label>
-        <input type="number" class="form-control" id="transfer-destination" placeholder="Enter destination account number" required>
+        <input type="number" class="form-control" id="transfer-destination"
+            placeholder="Enter destination account number" required>
     </div>
     <div class="form-group">
         <label for="transfer-comment" class="form-label">Comment</label>
@@ -33,6 +34,9 @@
         <button type="submit" class="btn btn-primary">Transfer</button>
     </div>
 </form>
+<div id="transferError" style="color:red">
+    Please enter a valid DestinationAccountNumber
+</div>
 
 <div class="modal" id="confirmTransfer" tabindex="10" aria-labelledby="confirmTransferLabel">
     <div class="modal-dialog">
@@ -129,6 +133,9 @@
 
     });
 
+    var transferErrorDisplay = document.getElementById("transferError");
+    transferErrorDisplay.style.display = "none";   
+
     async function submitTransfer(transaction, route) {
 
         const formData = new FormData();
@@ -146,6 +153,9 @@
 
         if (response.redirected) {
             window.location.href = "/Home";
+        } else if (response.status == 401) {
+            $('#confirmTransfer').modal('toggle');
+            transferErrorDisplay.style.display = "block";
         }
 
     }
