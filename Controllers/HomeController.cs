@@ -50,6 +50,24 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    public IActionResult Transfer([FromForm] Transaction transaction){
+        
+        Transaction destinationTransaction = new Transaction{
+            TransactionID = transaction.TransactionID,
+            TransactionType = TransactionType.T,
+            AccountNumber = (int)transaction.DestinationAccountNumber!,
+            DestinationAccountNumber = null, 
+            Amount = transaction.Amount,
+            Comment = transaction.Comment,
+            TransactionTimeUtc = transaction.TransactionTimeUtc,
+        };
+
+        _homeRepository.ValidateAndStoreTransaction(transaction);
+        _homeRepository.ValidateAndStoreTransaction(destinationTransaction);
+        
+        return RedirectToAction("Index", "Home");
+    }
+
     public async Task<ActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

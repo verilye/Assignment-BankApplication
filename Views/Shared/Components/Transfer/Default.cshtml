@@ -1,0 +1,155 @@
+@model List<AccountViewModel>
+@{
+    ViewData["route"] = "/Home/Transfer";
+}
+
+<h3>Make a Transfer</h3>
+<form id="transferForm" method="post">
+    <div class="form-group">
+        <label for="transfer-accountSelect" class="form-label">Select Account</label>
+        <select class="form-control" id="transfer-accountSelect" required>
+            <option type="number" value="" disabled selected>Select an account</option>
+            @foreach (var item in Model)
+            {
+                <option value=@item.Account.AccountNumber data-balance=@item.Balance>@item.Account.AccountNumber</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="transfer-amount" class="form-label">Amount</label>
+        <input type="number" step="0.01" class="form-control" id="transfer-amount" placeholder="Enter amount" required
+            min="0.1">
+    </div>
+    <div class="form-group">
+        <label for="transfer-destination" class="form-label">Destination Account</label>
+        <input type="number" class="form-control" id="transfer-destination" placeholder="Enter destination account number" required>
+    </div>
+    <div class="form-group">
+        <label for="transfer-comment" class="form-label">Comment</label>
+        <textarea class="form-control" id="transfer-comment" placeholder="Enter comment here"></textarea>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Transfer</button>
+    </div>
+</form>
+
+<div class="modal" id="confirmTransfer" tabindex="10" aria-labelledby="confirmTransferLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmTransferLabel">Confirm Transaction?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="submitTransferButton" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.getElementById("transfer-accountSelect").addEventListener("change", function (event) {
+        const selectedOption = this.options[this.selectedIndex];
+        const selectedAccountBalance = parseFloat(selectedOption.getAttribute("data-balance"));
+
+        document.getElementById("transfer-amount").max = selectedAccountBalance;
+    });
+
+    document.getElementById("transferForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        // Get form data
+        const accountSelect = document.getElementById("transfer-accountSelect");
+        const amountInput = document.getElementById("transfer-amount");
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
+        const amount = parseFloat(amountInput.value);
+        const comment = document.getElementById("transfer-comment").value;
+        const destinationAccount = document.getElementById("transfer-destination").value;
+
+        // Create transaction object
+        const transaction = {
+            TransactionID: 0,
+            TransactionType: 'T',
+            AccountNumber: selectedAccount,
+            DestinationAccountNumber: destinationAccount,
+            Amount: amount,
+            Comment: comment,
+            TransactionTimeUtc: new Date().toISOString(),
+        };
+
+        // Display ConfirmationWindow modal
+        displayTransferModal(transaction);
+    });
+
+
+    function displayTransferModal(transaction) {
+        const transferModal = new bootstrap.Modal(document.getElementById("confirmTransfer"));
+        const modalBody = document.querySelector("#confirmTransfer .modal-body");
+
+        // Populate modal content with transaction details
+        modalBody.innerHTML = '';
+        modalBody.innerHTML += ` <p>Transaction Type : ${transaction.TransactionType}</p>`;
+        modalBody.innerHTML += ` <p>Account Number : ${transaction.AccountNumber}</p>`;
+        modalBody.innerHTML += ` <p>DestinationAccountNumber : ${transaction.DestinationAccountNumber} </p>`;
+        modalBody.innerHTML += ` <p>Amount : ${transaction.Amount}</p>`;
+        modalBody.innerHTML += ` <p>Comment :${transaction.Comment}</p>`;
+        modalBody.innerHTML += ` <p>TransactionTimeUtc : ${transaction.TransactionTimeUtc}</p>`;
+
+        // Show the modal
+        $('#confirmTransfer').modal('toggle');
+    }
+
+    document.getElementById("submitTransferButton").addEventListener("click", function () {
+
+        const accountSelect = document.getElementById("transfer-accountSelect");
+        const amountInput = document.getElementById("transfer-amount");
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
+        const amount = parseFloat(amountInput.value);
+        const comment = document.getElementById("transfer-comment").value;
+        const destinationAccount = document.getElementById("transfer-destination").value;
+
+        // Create transaction object
+        const transaction = {
+            TransactionID: 0,
+            TransactionType: 'T',
+            AccountNumber: selectedAccount,
+            DestinationAccountNumber: destinationAccount,
+            Amount: amount,
+            Comment: comment,
+            TransactionTimeUtc: new Date().toISOString(),
+        };
+
+        const route = '@ViewData["route"]';
+        submitTransfer(transaction, route);
+
+    });
+
+    async function submitTransfer(transaction, route) {
+
+        const formData = new FormData();
+
+        for (const key in transaction) {
+            if (transaction.hasOwnProperty(key)) {
+                formData.append(key, transaction[key]);
+            }
+        }
+
+        const response = await fetch(route, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        }
+
+    }
+
+
+</script>
+
