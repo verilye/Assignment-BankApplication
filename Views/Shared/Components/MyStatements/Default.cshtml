@@ -1,0 +1,19 @@
+<div id="myStatements" class = "justify-content-center border">
+    <div class="container p-5">
+        <div class = "mb-4  p-3">
+            <h3>Select an account to view its transaction history</h3>
+        </div>
+
+        <div class="container d-flex col justify-content-start">
+            @foreach (var item in Model)
+            {
+                <div class="container row">
+                    <button class="btn btn-primary">
+                        <h5 class="col">Account Number: @item.Account.AccountNumber</h5>
+                        <h5 class="col">Balance: $@item.Balance</h5>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

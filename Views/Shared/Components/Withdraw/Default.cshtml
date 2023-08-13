@@ -3,31 +3,33 @@
     ViewData["route"] = "/Home/Withdraw";
 }
 
-<h3>Make a Withdrawal</h3>
-<form id="withdrawForm" method="post">
-    <div class="form-group">
-        <label for="withdraw-accountSelect" class="form-label">Select Account</label>
-        <select class="form-control" id="withdraw-accountSelect" required>
-            <option type="number" value="" disabled selected>Select an account</option>
-            @foreach (var item in Model)
-            {
-                <option value=@item.Account.AccountNumber data-balance=@item.Balance>@item.Account.AccountNumber</option>
-            }
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="withdraw-amount" class="form-label">Amount</label>
-        <input type="number" step="0.01" class="form-control" id="withdraw-amount" placeholder="Enter amount" required min="0.1">
-    </div>
-    <div class="form-group">
-        <label for="withdraw-comment" class="form-label">Comment</label>
-        <textarea class="form-control" id="withdraw-comment" placeholder="Enter comment here"></textarea>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" >Withdraw</button>
-    </div>
-</form>
+<div class="container border p-4">
+    <h3>Make a Withdrawal</h3>
+    <form id="withdrawForm" method="post">
+        <div class="form-group">
+            <label for="withdraw-accountSelect" class="form-label">Select Account</label>
+            <select class="form-control" id="withdraw-accountSelect" required>
+                <option type="number" value="" disabled selected>Select an account</option>
+                @foreach (var item in Model)
+                {
+                    <option value=@item.Account.AccountNumber data-balance=@item.Balance>@item.Account.AccountNumber</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="withdraw-amount" class="form-label">Amount</label>
+            <input type="number" step="0.01" class="form-control" id="withdraw-amount" placeholder="Enter amount" required min="0.1">
+        </div>
+        <div class="form-group">
+            <label for="withdraw-comment" class="form-label">Comment</label>
+            <textarea class="form-control" id="withdraw-comment" placeholder="Enter comment here"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" >Withdraw</button>
+        </div>
+    </form>
+</div>
 
 <div class="modal" id="confirmWithdraw" tabindex="10" aria-labelledby="confirmWithdrawLabel">
     <div class="modal-dialog">

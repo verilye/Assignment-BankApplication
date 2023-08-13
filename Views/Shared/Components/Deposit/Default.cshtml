@@ -2,32 +2,33 @@
 @{
     ViewData["route"] = "/Home/Deposit";
 }
-
-<h3>Make a Deposit</h3>
-<form id="depositForm" method="post">
-    <div class="form-group">
-        <label for="deposit-accountSelect" class="form-label">Select Account</label>
-        <select class="form-control" id="deposit-accountSelect" required>
-            <option type="number" value="" disabled selected>Select an account</option>
-            @foreach (var item in Model)
-            {
-                <option value=@item.Account.AccountNumber>@item.Account.AccountNumber</option>
-            }
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="deposit-amount" class="form-label">Amount</label>
-        <input type="number" step="0.01" class="form-control" id="deposit-amount" placeholder="Enter amount" required min="0.1">
-    </div>
-    <div class="form-group">
-        <label for="deposit-comment" class="form-label">Comment</label>
-        <textarea class="form-control" id="deposit-comment" placeholder="Enter comment here"></textarea>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Deposit</button>
-    </div>
-</form>
+<div class="container border p-4">
+    <h3>Make a Deposit</h3>
+    <form id="depositForm" method="post" >
+        <div class="form-group">
+            <label for="deposit-accountSelect" class="form-label">Select Account</label>
+            <select class="form-control" id="deposit-accountSelect" required>
+                <option type="number" value="" disabled selected>Select an account</option>
+                @foreach (var item in Model)
+                {
+                    <option value=@item.Account.AccountNumber>@item.Account.AccountNumber</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="deposit-amount" class="form-label">Amount</label>
+            <input type="number" step="0.01" class="form-control" id="deposit-amount" placeholder="Enter amount" required min="0.1">
+        </div>
+        <div class="form-group">
+            <label for="deposit-comment" class="form-label">Comment</label>
+            <textarea class="form-control" id="deposit-comment" placeholder="Enter comment here"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Deposit</button>
+        </div>
+    </form>
+</div>
 
 <div class="modal fade" id="confirmDeposit" tabindex="10" aria-labelledby="confirmDepositLabel" aria-hidden="true"
     aria-hidden="true">
