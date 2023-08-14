@@ -29,9 +29,12 @@ public class HomeController : Controller
         _homeRepository.InitialiseDB();
         // Get a list of accounts to display in option menues
         List<AccountViewModel> accounts = _homeRepository.FetchAccounts(customerID);
+        HomeViewDTO dto = new HomeViewDTO{
+            AccountViewModels = accounts,
+            SelectedAccount = 0
+        };
 
-        return View(accounts);
-
+        return View(dto);
     }
 
     [HttpPost]

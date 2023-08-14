@@ -1,4 +1,4 @@
-﻿@model List<AccountViewModel>
+﻿@model HomeViewDTO
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -20,7 +20,7 @@
                 <h3>Accounts:</h3>
                             
                 <div class="container d-flex justify-content-left"></div>
-                @foreach (var item in Model)
+                @foreach (var item in Model.AccountViewModels)
                 {
                     <div class="card p-3" style="width:50%">
                        <div class="col">Account Number: @item.Account.AccountNumber</div>

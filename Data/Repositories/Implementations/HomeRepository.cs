@@ -36,7 +36,8 @@ public class HomeRepository : IHomeRepository
                 var accountViewModel = new AccountViewModel
                 {
                     Account = account,
-                    Balance = deposits - withdraws
+                    Balance = deposits - withdraws,
+                    Transactions = transactions,
                 };
 
                 accountsWithBalance.Add(accountViewModel);

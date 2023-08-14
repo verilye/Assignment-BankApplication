@@ -1,19 +1,65 @@
-<div id="myStatements" class = "justify-content-center border">
+@model HomeViewDTO
+
+<div id="myStatements" class="justify-content-center border">
     <div class="container p-5">
-        <div class = "mb-4  p-3">
+        <div class="mb-4  p-3">
             <h3>Select an account to view its transaction history</h3>
         </div>
 
         <div class="container d-flex col justify-content-start">
-            @foreach (var item in Model)
-            {
-                <div class="container row">
-                    <button class="btn btn-primary">
-                        <h5 class="col">Account Number: @item.Account.AccountNumber</h5>
-                        <h5 class="col">Balance: $@item.Balance</h5>
-                    </button>
-                </div>
-            }
+            <form>
+                <select class="form-control" id="mystatements-accountSelect" required>
+                    <option type="number" value="" disabled selected>Select an account</option>
+                    @foreach (var item in Model.AccountViewModels)
+                    {
+                        <option value=@item.Account.AccountNumber>@item.Account.AccountNumber</option>
+                    }
+                </select>
+            </form>
         </div>
     </div>
 </div>
+
+
+<div id="transactionHistory" class="d-none">
+    <div>Selected Account</div>
+    <ul>
+        @foreach (var accountViewModel in Model.AccountViewModels)
+        {
+            @if (accountViewModel.Account.AccountNumber == Model.SelectedAccount)
+            {
+                @foreach (var transaction in accountViewModel.Transactions)
+                {
+                    <li>
+                        @transaction.TransactionID @transaction.TransactionType
+                        @transaction.AccountNumber @transaction.DestinationAccountNumber
+                        @transaction.Amount @transaction.Comment
+                        @transaction.TransactionTimeUtc
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>
+
+<script>
+    document.getElementById("mystatements-accountSelect").addEventListener("change", async function (event) {
+        const selectedOption = this.options[this.selectedIndex];
+        // By using an AJax request, the page model is updated with a variable and it can be used
+        // in razor page logic
+        const response = await fetch("/MyStatementsPageModel?handler=SetSelectedID", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ selectedOption: selectedOption.value }),
+        });
+
+        if (response.ok) {
+            console.log("updated selected AccountNumber")
+        } else {
+            console.error("Failed to update selected ID");
+        }
+    });
+
+</script>

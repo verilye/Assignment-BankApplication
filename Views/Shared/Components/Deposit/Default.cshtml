@@ -1,4 +1,4 @@
-@model List<AccountViewModel>
+@model HomeViewDTO
 @{
     ViewData["route"] = "/Home/Deposit";
 }
@@ -9,7 +9,7 @@
             <label for="deposit-accountSelect" class="form-label">Select Account</label>
             <select class="form-control" id="deposit-accountSelect" required>
                 <option type="number" value="" disabled selected>Select an account</option>
-                @foreach (var item in Model)
+                @foreach (var item in Model.AccountViewModels)
                 {
                     <option value=@item.Account.AccountNumber>@item.Account.AccountNumber</option>
                 }
