@@ -134,7 +134,7 @@ public class HomeController : Controller
         int customerID = Int32.Parse(customerIdClaim.Value);
         string loginID = loginIdClaim.Value;
 
-        string password = Request.Form["customerID"]!;
+        string password = Request.Form["password"]!;
         string hashedPassword = _homeRepository.HashPassword(password);
 
         Login login = new Login{

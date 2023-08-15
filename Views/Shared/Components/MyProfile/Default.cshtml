@@ -109,19 +109,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="changePasswordModalLabel">Edit Profile</h5>
+                <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
             </div>
             <div class="modal-body">
                 <form id="passwordForm">
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="text" class="form-control" id="password" minlength="1" maxlength="50">
-                    </div>
+                    <input id="password" name="password" class="form-control" type="text" placeholder="Password" />
+                    <button id="submitButton" type="submit" value="Submit"
+                        style="width:80%; margin-left:10%; border-radius:3rem;"
+                        class="btn btn-primary my-4 p-2 my-3 fw-bold">Change Password
+                    </button>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button id="submitPasswordButton" type="submit" type="button" class="btn btn-primary">Save
-                    Changes</button>
             </div>
             <div id="passwordError" style="color:red">
                 Please enter a valid username and password
@@ -201,9 +198,9 @@
     passwordForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const formData = new FormData(loginForm);
+        const formData = new FormData(passwordForm);
 
-        const response = await fetch("Login/SubmitForm", {
+        const response = await fetch("Home/ChangePassword", {
             method: "POST",
             body: formData,
         });

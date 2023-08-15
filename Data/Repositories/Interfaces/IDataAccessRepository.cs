@@ -14,7 +14,6 @@ public interface IDataAccessRepository
     List<Account> GetAccountsByCustomerId(int customerID);
     void StoreTransaction(Transaction transaction);
     List<Transaction> GetTransactionsByAccountNumber(int accountNumber);
-
     bool UpdateLogin(Login login);
 
 

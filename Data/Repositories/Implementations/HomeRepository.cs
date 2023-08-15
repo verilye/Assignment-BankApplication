@@ -88,7 +88,6 @@ public class HomeRepository : IHomeRepository
 
     public string HashPassword(string password)
     {
-
         ISimpleHash simpleHash = new SimpleHash();
         string hashedPassword = simpleHash.Compute(password);
 
