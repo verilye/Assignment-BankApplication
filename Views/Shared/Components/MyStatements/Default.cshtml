@@ -52,17 +52,15 @@
                     }
                 </tbody>
             </table>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    @for (int i = 0; i < Math.Ceiling((double)accountViewModel.Transactions.Count / 4); i++)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="#"
-                                onclick="changePage('@accountViewModel.Account.AccountNumber', @i)">Page @(i + 1)</a>
-                        </li>
-                    }
-                </ul>
-            </nav>
+
+            <div class="pagination">
+                <button class="page-button prev-button"
+                    onclick="changePage('@accountViewModel.Account.AccountNumber', -1)">&#8592;</button>
+                
+                <button class="page-button next-button"
+                    onclick="changePage('@accountViewModel.Account.AccountNumber', 1)">&#8594;</button>
+            </div>
+
         </div>
     }
 
@@ -90,16 +88,45 @@
         });
     }
 
-    function changePage(AccountNumber, pageNumber) {
-        const transactions = document.querySelectorAll(`[data-id="${AccountNumber}"] tbody tr`);
+    document.addEventListener("DOMContentLoaded", function () {
+        const accounts = document.querySelectorAll('[data-id]');
 
-        for (let i = 0; i < transactions.length; i++) {
-            if (i >= pageNumber * 4 && i < (pageNumber + 1) * 4) {
-                transactions[i].style.display = 'table-row';
-            } else {
-                transactions[i].style.display = 'none';
-            }
-        }
-    }
+        accounts.forEach(account => {
+            const transactions = account.querySelectorAll('.page-item');
+            let currentPage = 0;
+
+            transactions.forEach((transaction, index) => {
+                if (index < currentPage * 4 || index >= (currentPage + 1) * 4) {
+                    transaction.style.display = 'none';
+                }
+            });
+
+            const nextPageButton = account.querySelector('.next-button');
+            const prevPageButton = account.querySelector('.prev-button');
+
+            nextPageButton.addEventListener("click", function () {
+                transactions.forEach((transaction, index) => {
+                    transaction.style.display = 'none';
+                });
+                currentPage = (currentPage + 1) % Math.ceil(transactions.length / 4);
+                for (let i = currentPage * 4; i < (currentPage + 1) * 4 && i < transactions.length; i++) {
+                    transactions[i].style.display = 'table-row';
+                }
+                document.getElementById("current-page").textContent = currentPage + 1;
+            });
+
+            prevPageButton.addEventListener("click", function () {
+                transactions.forEach((transaction, index) => {
+                    transaction.style.display = 'none';
+                });
+                currentPage = (currentPage - 1 + Math.ceil(transactions.length / 4)) % Math.ceil(transactions.length / 4);
+                for (let i = currentPage * 4; i < (currentPage + 1) * 4 && i < transactions.length; i++) {
+                    transactions[i].style.display = 'table-row';
+                }
+                document.getElementById("current-page").textContent = currentPage + 1;
+            });
+        });
+    });
+
 
 </script>
