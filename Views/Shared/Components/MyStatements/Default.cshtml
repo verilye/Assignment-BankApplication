@@ -20,46 +20,61 @@
     </div>
 </div>
 
+<div id="transactionHistory" class="d-block">
 
-<div id="transactionHistory" class="d-none">
-    <div>Selected Account</div>
-    <ul>
-        @foreach (var accountViewModel in Model.AccountViewModels)
-        {
-            @if (accountViewModel.Account.AccountNumber == Model.SelectedAccount)
-            {
-                @foreach (var transaction in accountViewModel.Transactions)
-                {
-                    <li>
-                        @transaction.TransactionID @transaction.TransactionType
-                        @transaction.AccountNumber @transaction.DestinationAccountNumber
-                        @transaction.Amount @transaction.Comment
-                        @transaction.TransactionTimeUtc
-                    </li>
-                }
-            }
-        }
-    </ul>
+    @foreach (var accountViewModel in Model.AccountViewModels)
+    {
+        <div class="d-none" data-id='@accountViewModel.Account.AccountNumber' id='@accountViewModel.Account.AccountNumber'>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#ID</th>
+                        <th scope="col">TransactionType</th>
+                        <th scope="col">AccountNumber</th>
+                        <th scope="col">DestinationAccountNumber</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Comment</th>
+                        <th scope="col">TransactionTimeUtc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in accountViewModel.Transactions)
+                    {
+                        <tr>
+                            <th scope="row">@transaction.TransactionID </th>
+                            <td>@transaction.TransactionType </td>
+                            <td>@transaction.AccountNumber </td>
+                            <td>@transaction.DestinationAccountNumber</td>
+                            <td>@transaction.Amount </td>
+                            <td>@transaction.Comment</td>
+                            <td>@transaction.TransactionTimeUtc</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
 
 <script>
-    document.getElementById("mystatements-accountSelect").addEventListener("change", async function (event) {
-        const selectedOption = this.options[this.selectedIndex];
-        // By using an AJax request, the page model is updated with a variable and it can be used
-        // in razor page logic
-        const response = await fetch("/MyStatementsPageModel?handler=SetSelectedID", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ selectedOption: selectedOption.value }),
-        });
 
-        if (response.ok) {
-            console.log("updated selected AccountNumber")
-        } else {
-            console.error("Failed to update selected ID");
-        }
+    document.getElementById("mystatements-accountSelect").addEventListener("change", function (event) {
+        const selectedValue = event.target.value;
+        toggleAccount(selectedValue);
     });
+
+    function toggleAccount(AccountNumber) {
+        const allAccounts = document.querySelectorAll('[data-id]');
+        
+        allAccounts.forEach(account => {
+            if (account.getAttribute('data-id') === AccountNumber) {
+                account.classList.remove("d-none");
+                account.classList.add("d-block");
+            } else {
+                account.classList.remove("d-block");
+                account.classList.add("d-none");
+            }
+        });
+    }
 
 </script>
