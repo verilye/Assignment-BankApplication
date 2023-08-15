@@ -92,8 +92,13 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult SubmitProfile([FromForm] Customer customer)
     {
-        Console.WriteLine(customer.Name, customer.Tfn, customer.Mobile);
-        bool result = _homeRepository.StoreCustomerDetails(customer);
+
+        bool result = false;
+        if(ModelState.IsValid)
+        {
+            result = _homeRepository.StoreCustomerDetails(customer);
+        }
+      
         if(result){
             // Process request
             return RedirectToAction("Index", "Home");

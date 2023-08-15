@@ -75,7 +75,7 @@ public class HomeRepository : IHomeRepository
 
     public bool StoreCustomerDetails(Customer customer){
         
-        if(_dataAccess.UpdateCustomer(customer) == true){
+        if( _dataAccess.UpdateCustomer(customer) == true){
              return true;
         }else{
             return false;

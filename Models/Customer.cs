@@ -18,7 +18,7 @@ namespace WebDevAss2.Models
 
         [DataType(DataType.Text)]
         [MinLength(11), MaxLength(11)]
-        [RegularExpression(@"[0-9]+\s[0-9]+\s[0-9]+",
+        [RegularExpression(@"\d{3} \d{3} \d{3}",
             ErrorMessage = "Format needs to be XXX XXX XXX")]
         public string? Tfn { get; set; }
 
