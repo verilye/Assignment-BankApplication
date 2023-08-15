@@ -67,4 +67,19 @@ public class HomeRepository : IHomeRepository
         return _dataAccess.CheckForAccount(accountNumber);
     }
 
+    public Customer FetchCustomerById(int customerID){
+
+        return _dataAccess.GetCustomerByCustomerId(customerID);
+
+    }
+
+    public bool StoreCustomerDetails(Customer customer){
+        
+        if(_dataAccess.UpdateCustomer(customer) == true){
+             return true;
+        }else{
+            return false;
+        }
+    }
+
 }

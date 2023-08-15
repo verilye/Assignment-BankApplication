@@ -1,0 +1,152 @@
+@model HomeViewDTO
+
+@{
+    ViewData["route"] = "/Home/SubmitProfile";
+}
+
+<h3>MyProfile</h3>
+<hr>
+<table class="table">
+    <tbody>
+        <tr>
+            <th scope="row">Name</th>
+            <td>@Model.Customer.Name</td>
+        </tr>
+        <tr>
+            <th scope="row">TFN</th>
+            <td>@Model.Customer.Tfn</td>
+        </tr>
+        <tr>
+            <th scope="row">Address</th>
+            <td>@Model.Customer.Address</td>
+        </tr>
+        <tr>
+            <th scope="row">City</th>
+            <td>@Model.Customer.City</td>
+        </tr>
+        <tr>
+            <th scope="row">State</th>
+            <td>@Model.Customer.State</td>
+        </tr>
+        <tr>
+            <th scope="row">PostCode</th>
+            <td>@Model.Customer.PostCode</td>
+        </tr>
+        <tr>
+            <th scope="row">Mobile</th>
+            <td>@Model.Customer.Mobile</td>
+        </tr>
+</table>
+
+<button id="editProfileModalButton" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
+    Edit Profile
+</button>
+
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" value="@Model.Customer.Name" minlength="1" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="tfn">TFN</label>
+                        <input type="text" class="form-control" id="tfn" value="@Model.Customer.Tfn" minlength="11" maxlength="11">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" value="@Model.Customer.Address" minlength="1" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" value="@Model.Customer.City"minlength="1" maxlength="40">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" id="state" value="@Model.Customer.State"minlength="2" maxlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="postcode">PostCode</label>
+                        <input type="text" class="form-control" id="postcode" value="@Model.Customer.PostCode"minlength="4" maxlength="4">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile</label>
+                        <input type="text" class="form-control" id="mobile" value="@Model.Customer.Mobile" minlength="1" maxlength="12">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="submitProfileButton" type="submit" type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+
+            <div id ="profileErrorDisplay" style="colour:red;">Please enter valid customer information</div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #profile-element {
+        height: 1.5vh;
+    }
+</style>
+
+<script>
+    document.getElementById("editProfileModalButton").addEventListener("click", function () {
+        $('#editProfileModal').modal('toggle');
+    });
+
+    document.getElementById("submitProfileButton").addEventListener("click", async function (event) {
+        event.preventDefault();
+
+        const customer = {
+            CustomerIdentity : '@Model.Customer.CustomerIdentity',
+            CustomerID : '@Model.Customer.CustomerId',
+            Name: String(document.getElementById("name").value),
+            Tfn: String(document.getElementById("tfn").value) ,
+            Address: String(document.getElementById("address").value),
+            City: String(document.getElementById("city").value),
+            State: String(document.getElementById("state").value),
+            PostCode: String(document.getElementById("postcode").value),
+            Mobile: String(document.getElementById("mobile").value)
+        };
+
+        const route = '@ViewData["route"]';
+        submitProfile(customer, route);
+    });
+
+    async function submitProfile(customer, route) {
+
+        const formData = new FormData();
+
+        for (const key in customer) {
+            if (customer.hasOwnProperty(key)) {
+                formData.append(key, customer[key]);
+            }
+        }
+
+        const response = await fetch(route, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        }else if (response.status == 401) {
+            profileErrorDisplay.style.display = "block";
+        }
+
+    }
+
+</script>

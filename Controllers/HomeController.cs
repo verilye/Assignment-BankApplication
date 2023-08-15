@@ -29,9 +29,11 @@ public class HomeController : Controller
         _homeRepository.InitialiseDB();
         // Get a list of accounts to display in option menues
         List<AccountViewModel> accounts = _homeRepository.FetchAccounts(customerID);
-        HomeViewDTO dto = new HomeViewDTO{
+        Customer customer = _homeRepository.FetchCustomerById(customerID);
+        HomeViewDTO dto = new HomeViewDTO
+        {
             AccountViewModels = accounts,
-            SelectedAccount = 0
+            Customer = customer,
         };
 
         return View(dto);
@@ -53,6 +55,7 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [HttpPost]
     public IActionResult Transfer([FromForm] Transaction transaction)
     {
 
@@ -84,6 +87,21 @@ public class HomeController : Controller
             return StatusCode(401, "Bad destination account");
         }
 
+    }
+
+    [HttpPost]
+    public IActionResult SubmitProfile([FromForm] Customer customer)
+    {
+        Console.WriteLine(customer.Name, customer.Tfn, customer.Mobile);
+        bool result = _homeRepository.StoreCustomerDetails(customer);
+        if(result){
+            // Process request
+            return RedirectToAction("Index", "Home");
+        }else{
+            // Notify front end it hasnt gone to plan
+            return StatusCode(401, "Bad customer object");
+        }
+        
     }
 
     public async Task<ActionResult> Logout()

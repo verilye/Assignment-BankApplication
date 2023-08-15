@@ -7,6 +7,7 @@
     <div class="col-2">
         @await Component.InvokeAsync("SideBar")
     </div>
+    <div class="col-1"></div>
     <div class="col-6 mt-4">
         <div class="row mb-4" id="sidebar-viewport">
             <div id="depositView" class="d-block">@await Component.InvokeAsync("Deposit")</div>
@@ -17,21 +18,27 @@
         </div>
         <div class="row" id="account-display">
             <div class="container">
-                <h3>Accounts:</h3>
-                            
+                <h4>Accounts:</h3>
+
                 <div class="container d-flex justify-content-left"></div>
                 @foreach (var item in Model.AccountViewModels)
                 {
                     <div class="card p-3" style="width:50%">
-                       <div class="col">Account Number: @item.Account.AccountNumber</div>
-                       <div class="col">Balance: $@item.Balance</div>
+                        <div class="col">Account Number: @item.Account.AccountNumber</div>
+                        <div class="col">Balance: $@item.Balance</div>
                     </div>
                 }
-                </div>
             </div>
         </div>
     </div>
+    <div class="col-1"></div>
     <div class="col-2">
         @await Component.InvokeAsync("ProfileDisplay")
     </div>
 </div>
+
+<style>
+    #sidebar-viewport{
+        height:60vh;
+    }
+</style>

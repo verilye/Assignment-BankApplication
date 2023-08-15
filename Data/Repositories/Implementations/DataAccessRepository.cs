@@ -51,6 +51,19 @@ public class DataAccessRepository : IDataAccessRepository
             .FirstOrDefault(u=>u.CustomerId == customerID)!;
     }
 
+    public bool UpdateCustomer(Customer customer){
+        
+        var result = _context.Customers.Find(customer.CustomerId);
+        
+        if(result != null){
+            _context.Entry(result).CurrentValues.SetValues(customer);
+            _context.SaveChanges();
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public Login GetLoginByCustomerId(int customerID){
         return _context.Logins
             .FirstOrDefault(u=>u.CustomerId == customerID)!;

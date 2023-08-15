@@ -1,3 +1,5 @@
+@model HomeViewDTO
+
 <div class="d-flex flex-column flex-shrink-0 align-items-center bg-light" style="height:100vh;">
     <a class="d-flex mt-4 mb-3 link-dark text-decoration-none">
         <img src="~/Images/blank-profile-picture.png" class="img-thumbnail rounded mx-auto d-block"
@@ -5,7 +7,7 @@
         <hr>
     </a>
     <div>
-        <span class="fs-4">Welcome Connor!</span>
+        <span class="fs-5">Welcome @Model.Customer.Name!</span>
     </div>
     <hr>
     <a id = "Logout" href = "#" class="fs-5 btn btn-primary">Logout</a>

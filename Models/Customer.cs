@@ -9,11 +9,11 @@ namespace WebDevAss2.Models
         public int CustomerIdentity {get;set;}
 
         [Key]
-        [Required, MaxLength(4), MinLength(4)]
+        [Required]
         public int CustomerId { get; set; }
 
         [DataType(DataType.Text)]
-        [Required, MaxLength(50), MinLength(1)]
+        [Required, MaxLength(50), MinLength(1)] 
         public string Name { get; set; } = default!;
 
         [DataType(DataType.Text)]
@@ -30,8 +30,6 @@ namespace WebDevAss2.Models
         [MaxLength(40), MinLength(1)]
         public string? City { get; set; }
 
-        [DataType(DataType.Text)]
-        [MaxLength(3), MinLength(2)]
         public State? State { get; set; }
 
         [MaxLength(4), MinLength(4)]
