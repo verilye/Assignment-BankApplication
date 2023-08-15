@@ -37,23 +37,35 @@
                         <th scope="col">TransactionTimeUtc</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach (var transaction in accountViewModel.Transactions)
+                <tbody id="@accountViewModel.Account.AccountNumber">
+                    @for (int i = 0; i < accountViewModel.Transactions.Count; i++)
                     {
-                        <tr>
-                            <th scope="row">@transaction.TransactionID </th>
-                            <td>@transaction.TransactionType </td>
-                            <td>@transaction.AccountNumber </td>
-                            <td>@transaction.DestinationAccountNumber</td>
-                            <td>@transaction.Amount </td>
-                            <td>@transaction.Comment</td>
-                            <td>@transaction.TransactionTimeUtc</td>
+                        <tr class="page-item">
+                            <th scope="row">@accountViewModel.Transactions[i].TransactionID</th>
+                            <td>@accountViewModel.Transactions[i].TransactionType</td>
+                            <td>@accountViewModel.Transactions[i].AccountNumber</td>
+                            <td>@accountViewModel.Transactions[i].DestinationAccountNumber</td>
+                            <td>@accountViewModel.Transactions[i].Amount</td>
+                            <td>@accountViewModel.Transactions[i].Comment</td>
+                            <td>@accountViewModel.Transactions[i].TransactionTimeUtc</td>
                         </tr>
                     }
                 </tbody>
             </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @for (int i = 0; i < Math.Ceiling((double)accountViewModel.Transactions.Count / 4); i++)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="#"
+                                onclick="changePage('@accountViewModel.Account.AccountNumber', @i)">Page @(i + 1)</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
         </div>
     }
+
 </div>
 
 <script>
@@ -61,11 +73,12 @@
     document.getElementById("mystatements-accountSelect").addEventListener("change", function (event) {
         const selectedValue = event.target.value;
         toggleAccount(selectedValue);
+        changePage(selectedValue, 1);
     });
 
     function toggleAccount(AccountNumber) {
         const allAccounts = document.querySelectorAll('[data-id]');
-        
+
         allAccounts.forEach(account => {
             if (account.getAttribute('data-id') === AccountNumber) {
                 account.classList.remove("d-none");
@@ -75,6 +88,18 @@
                 account.classList.add("d-none");
             }
         });
+    }
+
+    function changePage(AccountNumber, pageNumber) {
+        const transactions = document.querySelectorAll(`[data-id="${AccountNumber}"] tbody tr`);
+
+        for (let i = 0; i < transactions.length; i++) {
+            if (i >= pageNumber * 4 && i < (pageNumber + 1) * 4) {
+                transactions[i].style.display = 'table-row';
+            } else {
+                transactions[i].style.display = 'none';
+            }
+        }
     }
 
 </script>
