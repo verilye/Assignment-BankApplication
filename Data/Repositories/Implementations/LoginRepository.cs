@@ -13,26 +13,25 @@ public class LoginRepository : ILoginRepository
         _dataAccess = dataAccess;
     }
 
-    public bool ValidateLoginDetails(string username, string password)
+    public Login? ValidateLoginDetails(string username, string password)
     {
-        bool validated = false;
-        Login? customerLogin = null;
         if (username.Length == 0 || password.Length == 0)
         {
-            validated = false;
+            return null;
         }
         else
         {
-           // get password from db
-           customerLogin = _dataAccess.GetLoginByCustomerId(Int32.Parse(username));
+            // get password from db
+            Login customerLogin = _dataAccess.GetLoginByLoginId(username);
+            bool validated = new SimpleHash().Verify(password!, customerLogin.PasswordHash);
+            if (validated)
+            {
+                return customerLogin;
+            }
         }
 
-        if (customerLogin != null)
-        {
-            validated = new SimpleHash().Verify(password!, customerLogin.PasswordHash);
-        }
+        return null;
 
-        return validated;
     }
 
 }

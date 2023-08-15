@@ -10,9 +10,12 @@ public interface IDataAccessRepository
     Customer GetCustomerByCustomerId(int customerID);
     bool UpdateCustomer(Customer customer);
     Login GetLoginByCustomerId(int customerID);
+    Login GetLoginByLoginId(string loginID);
     List<Account> GetAccountsByCustomerId(int customerID);
     void StoreTransaction(Transaction transaction);
     List<Transaction> GetTransactionsByAccountNumber(int accountNumber);
+
+    bool UpdateLogin(Login login);
 
 
 

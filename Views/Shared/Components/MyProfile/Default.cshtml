@@ -41,6 +41,9 @@
 <button id="editProfileModalButton" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
     Edit Profile
 </button>
+<button id="changePasswordButton" class="btn btn-primary" data-toggle="modal" data-target="#changePasswordModal">
+    Change Password
+</button>
 
 <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel"
     aria-hidden="true">
@@ -48,51 +51,82 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <form id="profileForm">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" value="@Model.Customer.Name" minlength="1" maxlength="50">
+                        <input type="text" class="form-control" id="name" value="@Model.Customer.Name" minlength="1"
+                            maxlength="50">
                     </div>
                     <div class="form-group">
                         <label for="tfn">TFN</label>
-                        <input type="text" class="form-control" id="tfn" value="@Model.Customer.Tfn" minlength="11" maxlength="11">
+                        <input type="text" class="form-control" id="tfn" value="@Model.Customer.Tfn" minlength="11"
+                            maxlength="11">
                     </div>
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" value="@Model.Customer.Address" minlength="1" maxlength="50">
+                        <input type="text" class="form-control" id="address" value="@Model.Customer.Address"
+                            minlength="1" maxlength="50">
                     </div>
                     <div class="form-group">
                         <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" value="@Model.Customer.City"minlength="1" maxlength="40">
+                        <input type="text" class="form-control" id="city" value="@Model.Customer.City" minlength="1"
+                            maxlength="40">
                     </div>
                     <div class="form-group">
                         <label for="state">State</label>
-                        <input type="text" class="form-control" id="state" value="@Model.Customer.State"minlength="2" maxlength="3">
+                        <input type="text" class="form-control" id="state" value="@Model.Customer.State" minlength="2"
+                            maxlength="3">
                     </div>
                     <div class="form-group">
                         <label for="postcode">PostCode</label>
-                        <input type="text" class="form-control" id="postcode" value="@Model.Customer.PostCode"minlength="4" maxlength="4">
+                        <input type="text" class="form-control" id="postcode" value="@Model.Customer.PostCode"
+                            minlength="4" maxlength="4">
                     </div>
                     <div class="form-group">
                         <label for="mobile">Mobile</label>
-                        <input type="text" class="form-control" id="mobile" value="@Model.Customer.Mobile" minlength="1" maxlength="12">
+                        <input type="text" class="form-control" id="mobile" value="@Model.Customer.Mobile" minlength="1"
+                            maxlength="12">
                     </div>
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="submitProfileButton" type="submit" type="button" class="btn btn-primary">Save Changes</button>
+                <button id="submitProfileButton" type="submit" type="button" class="btn btn-primary">Save
+                    Changes</button>
             </div>
-             <div id="profileError" style="color:red">
+            <div id="profileError" style="color:red">
                 Please enter a valid username and password
             </div>
-            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Edit Profile</h5>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="text" class="form-control" id="password" minlength="1" maxlength="50">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="submitPasswordButton" type="submit" type="button" class="btn btn-primary">Save
+                    Changes</button>
+            </div>
+            <div id="passwordError" style="color:red">
+                Please enter a valid username and password
+            </div>
+
         </div>
     </div>
 </div>
@@ -106,21 +140,29 @@
 
 <script>
 
-     var profileErrorDisplay = document.getElementById("profileError");
-        profileErrorDisplay.style.display = "none";     
+    var profileErrorDisplay = document.getElementById("profileError");
+    profileErrorDisplay.style.display = "none";
 
     document.getElementById("editProfileModalButton").addEventListener("click", function () {
         $('#editProfileModal').modal('toggle');
     });
 
+    var passwordErrorDisplay = document.getElementById("passwordError");
+    passwordErrorDisplay.style.display = "none";
+
+    document.getElementById("changePasswordButton").addEventListener("click", function () {
+        $('#changePasswordModal').modal('toggle');
+    });
+
+
     document.getElementById("submitProfileButton").addEventListener("click", async function (event) {
         event.preventDefault();
 
         const customer = {
-            CustomerIdentity : '@Model.Customer.CustomerIdentity',
-            CustomerID : '@Model.Customer.CustomerId',
+            CustomerIdentity: '@Model.Customer.CustomerIdentity',
+            CustomerID: '@Model.Customer.CustomerId',
             Name: String(document.getElementById("name").value),
-            Tfn: String(document.getElementById("tfn").value) ,
+            Tfn: String(document.getElementById("tfn").value),
             Address: String(document.getElementById("address").value),
             City: String(document.getElementById("city").value),
             State: String(document.getElementById("state").value),
@@ -149,10 +191,28 @@
 
         if (response.redirected) {
             window.location.href = "/Home";
-        }else if (response.status == 401) {
+        } else if (response.status == 401) {
             profileErrorDisplay.style.display = "block";
         }
 
     }
+
+    const passwordForm = document.getElementById('passwordForm');
+    passwordForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(loginForm);
+
+        const response = await fetch("Login/SubmitForm", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        } else if (response.status == 401) {
+            loginErrorDisplay.style.display = "block";
+        }
+    });
 
 </script>

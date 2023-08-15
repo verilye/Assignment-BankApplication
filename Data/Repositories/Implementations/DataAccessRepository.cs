@@ -69,6 +69,11 @@ public class DataAccessRepository : IDataAccessRepository
             .FirstOrDefault(u=>u.CustomerId == customerID)!;
     }
 
+    public Login GetLoginByLoginId(string loginID){
+        return _context.Logins
+            .FirstOrDefault(u=>u.LoginId == loginID)!;
+    }
+
     public void StoreTransaction(Transaction transaction)
     {
         _context.Transactions
@@ -88,5 +93,18 @@ public class DataAccessRepository : IDataAccessRepository
         return _context.Transactions
             .Where(u=>u.AccountNumber == accountNumber)
             .ToList();
+    }
+
+    public bool UpdateLogin(Login login)
+    {
+        var result = _context.Logins.Find(login.LoginId);
+        
+        if(result != null){
+            _context.Entry(result).CurrentValues.SetValues(login);
+            _context.SaveChanges();
+            return true;
+        }else{
+            return false;
+        }
     }
 }

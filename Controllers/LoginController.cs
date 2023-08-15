@@ -24,15 +24,16 @@ public class LoginController : Controller
     [HttpPost]
     public async Task<IActionResult> SubmitForm()
     {
-        string customerID = Request.Form["customerID"]!;
+        string loginID = Request.Form["loginID"]!; 
         string password = Request.Form["password"]!;
-        bool result = _loginRepository.ValidateLoginDetails(customerID, password);
+        Login? result = _loginRepository.ValidateLoginDetails(loginID, password);
         
-        if (result == true)
+        if (result != null)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, customerID),
+                new Claim("LoginId", result.LoginId, ClaimValueTypes.String),
+                new Claim("CustomerId", result.CustomerId.ToString(), ClaimValueTypes.String),
             };
             
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

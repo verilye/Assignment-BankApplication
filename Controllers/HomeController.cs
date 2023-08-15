@@ -19,11 +19,10 @@ public class HomeController : Controller
         _homeRepository = homeRepository;
 
     }
-
+ 
     public ActionResult Index()
     {
-        ClaimsPrincipal user = HttpContext.User;
-        int customerID = Int32.Parse(user.Identity!.Name!);
+        int customerID = Int32.Parse(User.FindFirstValue("CustomerId")!)!;
 
         // If DB is unpopulated, populate it
         _homeRepository.InitialiseDB();
@@ -42,17 +41,33 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Deposit([FromForm] Transaction transaction)
     {
-        _homeRepository.ValidateAndStoreTransaction(transaction);
 
-        return RedirectToAction("Index", "Home");
+        if (ModelState.IsValid)
+        {
+            _homeRepository.ValidateAndStoreTransaction(transaction);
+
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            return StatusCode(401, "Bad account object");
+        }
     }
 
     [HttpPost]
     public IActionResult Withdraw([FromForm] Transaction transaction)
     {
-        _homeRepository.ValidateAndStoreTransaction(transaction);
+        if (ModelState.IsValid)
+        {
+            _homeRepository.ValidateAndStoreTransaction(transaction);
 
-        return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            return StatusCode(401, "Bad account object");
+        }
+
     }
 
     [HttpPost]
@@ -63,7 +78,7 @@ public class HomeController : Controller
         {
             return StatusCode(401, "DestinationAccount is null");
         }
-        else if (_homeRepository.ConfirmDestinationAccountExists((int)transaction.DestinationAccountNumber))
+        else if (_homeRepository.ConfirmDestinationAccountExists((int)transaction.DestinationAccountNumber) && ModelState.IsValid)
         {
             Transaction destinationTransaction = new Transaction
             {
@@ -84,7 +99,7 @@ public class HomeController : Controller
         else
         {
             //Pass along error message here
-            return StatusCode(401, "Bad destination account");
+            return StatusCode(401, "Bad account object");
         }
 
     }
@@ -92,21 +107,54 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult SubmitProfile([FromForm] Customer customer)
     {
-
         bool result = false;
-        if(ModelState.IsValid)
+        if (ModelState.IsValid)
         {
             result = _homeRepository.StoreCustomerDetails(customer);
         }
-      
-        if(result){
+
+        if (result)
+        {
             // Process request
             return RedirectToAction("Index", "Home");
-        }else{
+        }
+        else
+        {
             // Notify front end it hasnt gone to plan
             return StatusCode(401, "Bad customer object");
         }
-        
+
+    }
+
+    public IActionResult ChangePassword(){
+
+        ClaimsPrincipal user = HttpContext.User;
+        Claim customerIdClaim = user.FindFirst("CustomerId")!;
+        Claim loginIdClaim = user.FindFirst("LoginId")!;
+        int customerID = Int32.Parse(customerIdClaim.Value);
+        string loginID = loginIdClaim.Value;
+
+        string password = Request.Form["customerID"]!;
+        string hashedPassword = _homeRepository.HashPassword(password);
+
+        Login login = new Login{
+            LoginId = loginID,
+            CustomerId = customerID, 
+            PasswordHash = hashedPassword
+        };
+
+        if(_homeRepository.ChangePassword(login))
+        {
+            // Process request
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            // Notify front end it hasnt gone to plan
+            return StatusCode(401, "Bad Login object");
+        }
+
+
     }
 
     public async Task<ActionResult> Logout()

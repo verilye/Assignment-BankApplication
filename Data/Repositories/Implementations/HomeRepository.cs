@@ -1,8 +1,6 @@
-using SimpleHashing.Net;
 using WebDevAss2.Models;
-using WebDevAss2.Data.Repositories;
-using WebDevAss2.Data;
-using Microsoft.AspNetCore.Http;
+using SimpleHashing.Net;
+
 
 namespace WebDevAss2.Data.Repositories;
 
@@ -62,24 +60,46 @@ public class HomeRepository : IHomeRepository
         return;
     }
 
-    public bool ConfirmDestinationAccountExists(int accountNumber){
+    public bool ConfirmDestinationAccountExists(int accountNumber)
+    {
 
         return _dataAccess.CheckForAccount(accountNumber);
     }
 
-    public Customer FetchCustomerById(int customerID){
+    public Customer FetchCustomerById(int customerID)
+    {
 
         return _dataAccess.GetCustomerByCustomerId(customerID);
 
     }
 
-    public bool StoreCustomerDetails(Customer customer){
-        
-        if( _dataAccess.UpdateCustomer(customer) == true){
-             return true;
-        }else{
+    public bool StoreCustomerDetails(Customer customer)
+    {
+
+        if (_dataAccess.UpdateCustomer(customer) == true)
+        {
+            return true;
+        }
+        else
+        {
             return false;
         }
     }
+
+    public string HashPassword(string password)
+    {
+
+        ISimpleHash simpleHash = new SimpleHash();
+        string hashedPassword = simpleHash.Compute(password);
+
+        return hashedPassword;
+    }
+
+    public bool ChangePassword(Login login)
+    {
+        return _dataAccess.UpdateLogin(login);
+    }
+
+
 
 }

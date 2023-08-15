@@ -9,5 +9,7 @@ public interface IHomeRepository{
    bool ConfirmDestinationAccountExists(int accountNumber);
    Customer FetchCustomerById(int customerId);
    bool StoreCustomerDetails(Customer customer);
+   string HashPassword(string password);
+   bool ChangePassword(Login password);
     
 };
