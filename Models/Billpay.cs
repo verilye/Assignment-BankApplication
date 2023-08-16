@@ -27,6 +27,9 @@ public class BillPay{
     [Column(TypeName = "char(1)")]
     public Period Period{get;set;}
 
+    [Required]
+    public bool Failed{get;set;}
+
     public Payee? Payee{get;set;}
 
     public Account? Account{get;set;}

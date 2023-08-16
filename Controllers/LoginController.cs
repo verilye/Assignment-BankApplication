@@ -16,8 +16,11 @@ public class LoginController : Controller
         _loginRepository = loginRepository;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+         // If DB is unpopulated, populate it
+        await _loginRepository.InitialiseDB();
+
         return View();
     }
 

@@ -24,8 +24,6 @@ public class HomeController : Controller
     {
         int customerID = Int32.Parse(User.FindFirstValue("CustomerId")!)!;
 
-        // If DB is unpopulated, populate it
-        _homeRepository.InitialiseDB();
         // Get a list of accounts to display in option menues
         List<AccountViewModel> accounts = _homeRepository.FetchAccounts(customerID);
         Customer customer = _homeRepository.FetchCustomerById(customerID);
@@ -143,7 +141,7 @@ public class HomeController : Controller
             PasswordHash = hashedPassword
         };
 
-        if(_homeRepository.ChangePassword(login))
+        if(_homeRepository.ChangePassword(login) && ModelState.IsValid)
         {
             // Process request
             return RedirectToAction("Index", "Home");
@@ -153,8 +151,6 @@ public class HomeController : Controller
             // Notify front end it hasnt gone to plan
             return StatusCode(401, "Bad Login object");
         }
-
-
     }
 
     public async Task<ActionResult> Logout()

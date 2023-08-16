@@ -7,10 +7,21 @@ namespace WebDevAss2.Data.Repositories;
 public class LoginRepository : ILoginRepository
 {
     private readonly IDataAccessRepository _dataAccess;
+    private readonly IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
 
-    public LoginRepository(IDataAccessRepository dataAccess)
+    public LoginRepository(IDataAccessRepository dataAccess, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService)
     {
         _dataAccess = dataAccess;
+        _jsonDataWebService = jsonDataWebService;
+    }
+
+    public async Task InitialiseDB()
+    {            
+        if (_dataAccess.CheckForPopulatedDb() == false)
+        {
+            List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
+            _dataAccess.InitUserData(customers);
+        }
     }
 
     public Login? ValidateLoginDetails(string username, string password)

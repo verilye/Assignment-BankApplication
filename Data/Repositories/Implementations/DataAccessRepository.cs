@@ -13,7 +13,6 @@ public class DataAccessRepository : IDataAccessRepository
         _context = context;
     }
 
-
     public bool CheckForPopulatedDb(){
         return _context.Customers.Any();
 
@@ -29,10 +28,10 @@ public class DataAccessRepository : IDataAccessRepository
         {
             _context.Customers.Add(customer);
             
-            foreach(Account account in customer.Accounts!){
+            foreach(Account account in customer.Accounts  ?? Enumerable.Empty<Account>()){
                 account.CustomerId = customer.CustomerId;
                 _context.Accounts.Add(account);
-                foreach(Transaction transaction in account.Transactions!){
+                foreach(Transaction transaction in account.Transactions ?? Enumerable.Empty<Transaction>()){
                     transaction.AccountNumber = account.AccountNumber;
                     _context.Transactions.Add(transaction);
                 }
@@ -107,4 +106,11 @@ public class DataAccessRepository : IDataAccessRepository
             return false;
         }
     }
+
+    public List<BillPay> GetAllPendingBillPays(){
+        return _context.BillPays
+            .Where(u=>u.Failed == false)
+            .ToList();
+    }
+
 }

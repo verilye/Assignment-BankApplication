@@ -19364,6 +19364,25 @@
         }
       },
       {
+        "HashCode": -824837140,
+        "Kind": "MVC.ViewComponent",
+        "Name": "__Generated__BillPayViewComponentTagHelper",
+        "AssemblyName": "WebDevAss2",
+        "DisplayName": "BillPayViewComponentTagHelper",
+        "CaseSensitive": false,
+        "TagMatchingRules": [
+          {
+            "TagName": "vc:bill-pay",
+            "CaseSensitive": false
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "__Generated__BillPayViewComponentTagHelper",
+          "MVC.ViewComponent.Name": "BillPay",
+          "Runtime.Name": "ITagHelper"
+        }
+      },
+      {
         "HashCode": 1247134188,
         "Kind": "Components.Bind",
         "Name": "Bind",
@@ -24256,6 +24275,11 @@
     {
       "FilePath": "/home/connorlogan/Desktop/WebDevAss2/Views/Shared/_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/connorlogan/Desktop/WebDevAss2/Views/Shared/Components/BillPay/Default.cshtml",
+      "TargetPath": "Views\\Shared\\Components\\BillPay\\Default.cshtml",
       "FileKind": "mvc"
     }
   ]

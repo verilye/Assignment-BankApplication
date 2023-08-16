@@ -15,6 +15,7 @@ public interface IDataAccessRepository
     void StoreTransaction(Transaction transaction);
     List<Transaction> GetTransactionsByAccountNumber(int accountNumber);
     bool UpdateLogin(Login login);
+    List<BillPay> GetAllPendingBillPays();
 
 
 

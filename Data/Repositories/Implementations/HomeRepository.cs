@@ -1,19 +1,16 @@
 using WebDevAss2.Models;
 using SimpleHashing.Net;
 
-
 namespace WebDevAss2.Data.Repositories;
 
 public class HomeRepository : IHomeRepository
 {
     private readonly IDataAccessRepository _dataAccess;
-    private readonly IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
 
-
-    public HomeRepository(IDataAccessRepository dataAccess, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService)
+    public HomeRepository(IDataAccessRepository dataAccess)
     {
         _dataAccess = dataAccess;
-        _jsonDataWebService = jsonDataWebService;
+      
     }
 
     public List<AccountViewModel> FetchAccounts(int customerID)
@@ -42,15 +39,6 @@ public class HomeRepository : IHomeRepository
             }
         }
         return accountsWithBalance;
-    }
-
-    public async void InitialiseDB()
-    {
-        if (_dataAccess.CheckForPopulatedDb() == false)
-        {
-            List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
-            _dataAccess.InitUserData(customers);
-        }
     }
 
     public void ValidateAndStoreTransaction(Transaction transaction)
@@ -96,6 +84,7 @@ public class HomeRepository : IHomeRepository
 
     public bool ChangePassword(Login login)
     {
+
         return _dataAccess.UpdateLogin(login);
     }
 
