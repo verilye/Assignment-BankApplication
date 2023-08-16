@@ -17,6 +17,7 @@ builder.Services.AddScoped<IDataAccessRepository, DataAccessRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IHomeRepository, HomeRepository>();
 builder.Services.AddHttpClient<UserDataWebServiceRepository<List<Customer>>>();
+builder.Services.AddHostedService<ScheduledPaymentService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options=>{

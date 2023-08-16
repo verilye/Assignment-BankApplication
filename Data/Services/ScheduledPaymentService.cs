@@ -47,13 +47,43 @@ public class ScheduledPaymentService : BackgroundService
 
     private bool ProcessPayment(BillPay payment)
     {
-        // payment processing logic here
-        // Return true if payment was successful, otherwise return false
+        // Return true if payment was successful, otherwise return false 
+        // Check Balance is above 0
 
-        // Check to see if payment valid
+        float balance = _paymentRepository.getBalanceOfAccount(payment.AccountNumber);
 
-        // complete new transaction
+        if(balance >= payment.Amount){
 
-        return true;
+            Transaction transaction = new Transaction{
+                TransactionID = 0,
+                TransactionType = TransactionType.T,
+                AccountNumber = payment.AccountNumber,
+                DestinationAccountNumber = payment.PayeeId,
+                Amount = payment.Amount,
+                Comment = null,
+                TransactionTimeUtc = payment.ScheduleTimeUtc,
+            };
+            _paymentRepository.ValidateAndStoreBillPay(transaction);
+            
+            if(payment.Period == Period.M){
+                //create new billpay + 1 to month
+                BillPay billPay = new BillPay{
+                    BillPayId = 0,
+                    AccountNumber = payment.AccountNumber,
+                    PayeeId = payment.PayeeId,
+                    Amount = payment.Amount,
+                    ScheduleTimeUtc = payment.ScheduleTimeUtc =DateTime.UtcNow.AddMonths(1),
+                    Period = payment.Period,
+                    Failed = false,
+                };
+
+                _paymentRepository.AddNewBillPay(billPay);
+            }
+
+            return true;
+
+        }else{
+            return false;
+        }
     }
 }

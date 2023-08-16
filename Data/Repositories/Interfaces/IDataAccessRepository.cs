@@ -16,8 +16,11 @@ public interface IDataAccessRepository
     List<Transaction> GetTransactionsByAccountNumber(int accountNumber);
     bool UpdateLogin(Login login);
     List<BillPay> GetAllPendingBillPays();
-
-
+    float GetAccountBalance(int accountNumber);
+    void RemoveBillPay(BillPay billPay);
+    void UpdateBillPay(BillPay billPay);
+    void StoreBillPay(BillPay billPay);
+    List<BillPay> GetBillPays(int accountNumber);
 
 }
 

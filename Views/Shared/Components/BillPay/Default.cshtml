@@ -3,9 +3,10 @@
 <div>
     <div>Currently Scheduled Bills</div>
     <ul>
-        <li></li>
-        <li></li>
-        <li></li>
+        @foreach(BillPay billpay in Model.BillPays){
+            <li>@billpay.AccountNumber</li>
+            <li>@billpay.ScheduleTimeUtc</li>
+        }
     </ul>
 
     <button class="btn btn-primary">Schedule New Bill</button>

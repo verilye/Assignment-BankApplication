@@ -13,10 +13,12 @@ namespace WebDevAss2.Controllers;
 public class HomeController : Controller
 {
     private readonly IHomeRepository _homeRepository;
+    private readonly IPaymentRepository _paymentRepository;
 
-    public HomeController(IHomeRepository homeRepository)
+    public HomeController(IHomeRepository homeRepository, IPaymentRepository paymentRepository)
     {
         _homeRepository = homeRepository;
+        _paymentRepository = paymentRepository;
 
     }
  
@@ -27,10 +29,16 @@ public class HomeController : Controller
         // Get a list of accounts to display in option menues
         List<AccountViewModel> accounts = _homeRepository.FetchAccounts(customerID);
         Customer customer = _homeRepository.FetchCustomerById(customerID);
+        List<BillPay> billPays = new List<BillPay>();
+        foreach(var accountViewModel in accounts){
+            List<BillPay> result = _paymentRepository.GetBillPaysByAccountNumber(accountViewModel.Account.AccountNumber);
+            billPays.AddRange(result);
+        } 
         HomeViewDTO dto = new HomeViewDTO
         {
             AccountViewModels = accounts,
             Customer = customer,
+            BillPays = billPays
         };
 
         return View(dto);

@@ -1,6 +1,3 @@
-using System;
-using System.Net.Http;
-using Newtonsoft.Json;
 using WebDevAss2.Models;
 
 namespace WebDevAss2.Data.Repositories;
@@ -112,5 +109,54 @@ public class DataAccessRepository : IDataAccessRepository
             .Where(u=>u.Failed == false)
             .ToList();
     }
+
+    public float GetAccountBalance(int accountNumber){
+
+        List<Transaction> transactions = _context.Transactions
+        .Where(u=>u.AccountNumber == accountNumber)
+        .ToList();
+
+        float balance = 0;
+
+        foreach(var transaction in transactions){
+            if(transaction.TransactionType == TransactionType.D){
+                balance = balance + transaction.Amount;
+            }else if(transaction.TransactionType == TransactionType.W){
+                balance = balance - transaction.Amount;
+            }else if(transaction.TransactionType == TransactionType.T && transaction.DestinationAccountNumber == null){
+                 balance = balance + transaction.Amount;
+            }else{
+                 balance = balance - transaction.Amount;
+            }
+        }
+
+        return balance;
+    }
+
+    public void RemoveBillPay(BillPay billPay){
+        _context.BillPays.Remove(billPay);
+        return;
+    }
+
+    public void UpdateBillPay(BillPay billPay){
+        var result = _context.BillPays.Find(billPay.BillPayId);
+        
+        if(result != null){
+            _context.Entry(result).CurrentValues.SetValues(billPay);
+            _context.SaveChanges();
+        }
+    }
+
+    public void StoreBillPay(BillPay billPay){
+
+        _context.BillPays.Add(billPay);
+        _context.SaveChanges();
+
+    }
+
+    public List<BillPay> GetBillPays(int accountNumber){
+        return _context.BillPays.Where(x => x.AccountNumber == accountNumber).ToList();   
+    }
+
 
 }
