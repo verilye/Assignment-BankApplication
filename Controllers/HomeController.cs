@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using ImageMagick;
 
 namespace WebDevAss2.Controllers;
 
@@ -261,11 +262,26 @@ public class HomeController : Controller
 
             int customerID = Int32.Parse(User.FindFirstValue("CustomerId")!)!;
             Customer customer = _homeRepository.FetchCustomerById(customerID);
-            customer.ProfilePicture = memoryStream.ToArray();
 
-            _homeRepository.StoreCustomerDetails(customer);
+            if (customer != null)
+            {
+                // Convert the image to JPG format using Magick.NET
+                using (var imageStream = new MemoryStream(memoryStream.ToArray()))
+                {
+                    using (var image = new MagickImage(imageStream))
+                    {
+                        // Resize the image to 400x400 pixels
+                        image.Resize(new MagickGeometry(400, 400));
+                        // Set the format to JPG
+                        image.Format = MagickFormat.Jpg;
+
+                        // Convert the image to bytes and update the customer's profile picture
+                        customer.ProfilePicture = image.ToByteArray();
+                    }
+                }
+                _homeRepository.StoreCustomerDetails(customer);
+            }
         }
-
         return RedirectToAction("Index", "Home");
     }
 
@@ -287,6 +303,21 @@ public class HomeController : Controller
             var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
             return File(defaultImageBytes, "image/jpeg");
         }
+    }
+
+    [HttpPost]
+    public IActionResult DeleteProfilePicture()
+    {
+        int customerID = Int32.Parse(User.FindFirstValue("CustomerId")!)!;
+        Customer customer = _homeRepository.FetchCustomerById(customerID);
+
+        if (customer != null)
+        {
+            customer.ProfilePicture = null;
+            _homeRepository.StoreCustomerDetails(customer);
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
     public async Task<ActionResult> Logout()

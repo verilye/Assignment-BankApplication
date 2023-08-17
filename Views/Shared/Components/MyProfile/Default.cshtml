@@ -6,6 +6,16 @@
 
 <h3>MyProfile</h3>
 <hr>
+@if (Model.Customer.ProfilePicture != null)
+{
+    <img src="@Url.Action("GetProfilePicture", new { userId = Model.Customer.CustomerId })" alt="Profile Picture"
+    class="img-fluid mx-auto d-block" style="width: 100px; height: 100px;" />
+}
+else
+{
+    <img src="~/Images/blank-profile-picture.png" class="rounded-circle mx-auto d-block" alt="profile-picture" width="100px"
+    height="100px">
+}
 <table class="table">
     <tbody>
         <tr>

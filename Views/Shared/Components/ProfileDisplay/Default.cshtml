@@ -1,36 +1,41 @@
 @model HomeViewDTO
 
-<div class="d-flex flex-column flex-shrink-0 align-items-center bg-light" style="height:100vh;">
-    <a class="d-flex mt-4 mb-3 link-dark text-decoration-none">
+<div class="d-flex flex-column align-items-center bg-light vh-100">
+    <div class="mt-4 mb-3">
         @if (Model.Customer.ProfilePicture != null)
         {
-            <img src="@Url.Action("GetProfilePicture", new { userId = Model.Customer.CustomerId })" alt="Profile Picture"
-                class="img-fluid rounded-circle" style="max-width: 200px; max-height: 200px;" />
+            <img src="@Url.Action("GetProfilePicture", new { userId = Model.Customer.CustomerId })"
+                 alt="Profile Picture" class="img-fluid" style="max-width: 400px; max-height: 400px;" />
         }
         else
         {
-            <img src="~/Images/blank-profile-picture.png" class="img-thumbnail rounded mx-auto d-block"
-                alt="profile-picture" width="200px" height="200px">
+            <img src="~/Images/blank-profile-picture.png" class="rounded-circle mx-auto d-block" alt="profile-picture" width="200px" height="200px">
         }
-        <hr>
-    </a>
-    <div>
-        <span class="fs-5">Welcome @Model.Customer.Name!</span>
     </div>
-    <hr>
-    <a id="Logout" href="#" class="fs-5 btn btn-primary">Logout</a>
-
-    <div class="m-4">
-        <div class="col-md-6">
-            <form method="post" enctype="multipart/form-data" asp-action="UploadProfilePicture" asp-controller="Home">
-                <div class="mb-3">
-                    <label for="ProfilePictureFile" class="form-label">Upload Profile Picture:</label>
-                    <input type="file" class="form-control" id="ProfilePictureFile" name="profilePictureFile">
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
-        </div>
+    <hr class="w-100">
+    <div class="text-center">
+        <h4>Welcome, @Model.Customer.Name!</h4>
     </div>
+    <hr class="w-100">
+    <div class="mb-4 d-flex">
+        <form method="post" enctype="multipart/form-data" asp-action="UploadProfilePicture" asp-controller="Home">
+            <div class="mb-3">
+                <label for="ProfilePictureFile" class="form-label">Upload Profile Picture:</label>
+                <input type="file" class="form-control" id="ProfilePictureFile" name="profilePictureFile">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <hr/>
+    </div>
+    
+    @if (Model.Customer.ProfilePicture != null)
+    {
+        <form method="post" asp-action="DeleteProfilePicture" asp-controller="Home">
+            <button type="submit" class="btn btn-danger">Delete Profile Picture</button>
+        </form>
+    }
+    <hr class="w-100">
+    <a href="#" class="btn btn-primary" id="Logout">Logout</a>
 </div>
 
 <script>
