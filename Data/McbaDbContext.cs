@@ -29,7 +29,7 @@ public class McbaDbContext : DbContext
         builder.Entity<Customer>()
             .Property(e => e.CustomerIdentity)
             .ValueGeneratedOnAdd();
-        
+
         builder.Entity<Customer>()
             .Property(e => e.CustomerId)
             .ValueGeneratedNever();
@@ -37,11 +37,11 @@ public class McbaDbContext : DbContext
         builder.Entity<Account>()
             .Property(e => e.AccountIdentity)
             .ValueGeneratedOnAdd();
-        
+
         builder.Entity<Account>()
             .Property(e => e.AccountNumber)
             .ValueGeneratedNever();
-      
+
 
         builder.Entity<Transaction>()
             .HasOne(t => t.Account)
@@ -55,6 +55,10 @@ public class McbaDbContext : DbContext
 
         builder.Entity<BillPay>().HasOne(t => t.Account).WithMany(a => a.BillPays).HasForeignKey(t => t.AccountNumber);
         builder.Entity<BillPay>().HasOne(t => t.Payee).WithMany(a => a.BillPays).HasForeignKey(t => t.PayeeId);
+
+        builder.Entity<Payee>()
+       .Property(p => p.PayeeID)
+           .ValueGeneratedNever();
 
         // CONSTRAINT EXAMPLE
         // builder.Entity<Transaction>().HasCheckConstraint("CH_Transaction_Amount", "Amount > 0");

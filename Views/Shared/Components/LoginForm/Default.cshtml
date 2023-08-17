@@ -44,7 +44,7 @@
 
         if (response.redirected) {
             window.location.href = "/Home";
-        } else if (response.status == 401) {
+        } else if (response.status == 400) {
             loginErrorDisplay.style.display = "block";
         }
     });

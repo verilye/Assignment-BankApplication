@@ -1,14 +1,251 @@
 <h3>Billpay</h3>
-
+<hr />
 <div>
-    <div>Currently Scheduled Bills</div>
-    <ul>
-        @foreach(BillPay billpay in Model.BillPays){
-            <li>@billpay.AccountNumber</li>
-            <li>@billpay.ScheduleTimeUtc</li>
-        }
-    </ul>
+    <h4>Currently Scheduled Bills</h4>
+    <h5>Note: BillPays may take up to 10 seconds to process</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#ID</th>
+                <th scope="col">AccountNumber</th>
+                <th scope="col">PayeeId</th>
+                <th scope="col">Amount</th>
+                <th scope="col">ScheduledTime</th>
+                <th scope="col">Period</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (BillPay billpay in Model.BillPays)
+            {
+                @if (billpay.Failed == false)
+                {
+                    <tr>
+                        <td>@billpay.BillPayId</td>
+                        <td>@billpay.Account.AccountNumber</td>
+                        <td>@billpay.PayeeId</td>
+                        <td>@billpay.Amount</td>
+                        <td>@billpay.ScheduleTimeUtc</td>
+                        <td>@billpay.Period</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <hr />
+    <h4>Failed BillPays</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#ID</th>
+                <th scope="col">AccountNumber</th>
+                <th scope="col">PayeeId</th>
+                <th scope="col">Amount</th>
+                <th scope="col">ScheduledTime</th>
+                <th scope="col">Period</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (BillPay failed in Model.BillPays)
+            {
+                @if (failed.Failed == true)
+                {
+                    <tr>
+                        <td>@failed.BillPayId</td>
+                        <td>@failed.Account.AccountNumber</td>
+                        <td>@failed.PayeeId</td>
+                        <td>@failed.Amount</td>
+                        <td>@failed.ScheduleTimeUtc</td>
+                        <td>@failed.Period</td>
+                        <td><button class="btn btn-primary" onclick="cancelBillPay('@failed.BillPayId')">Cancel</button></td>
+                        <td><button class="btn btn-primary" onclick="retryBillPay('@failed.BillPayId')">Retry</button></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 
-    <button class="btn btn-primary">Schedule New Bill</button>
 
+    <button id="scheduleNewBillButton" class="btn btn-primary" data-toggle="modal" data-target="#billPayModal">
+        Schedule New Bill
+    </button>
+
+    <div>Note: seeded payeedID's in the database are 411229, 12345 and 54321</div>
 </div>
+
+<div class="modal fade" id="billPayModal" tabindex="-1" role="dialog" aria-labelledby="billPayModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="billPayModalLabel">Schedule New Bill</h5>
+            </div>
+            <div class="modal-body">
+                <form id="billPayForm">
+                    <div class="form-group">
+                        <label for="billPay-accountSelect" class="form-label">Select Account</label>
+                        <select class="form-control" id="billPay-accountSelect" required>
+                            <option type="number" value="" disabled selected>Select an account</option>
+                            @foreach (var item in Model.AccountViewModels)
+                            {
+                                <option value=@item.Account.AccountNumber>@item.Account.AccountNumber</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="billPay-period" class="form-label">Select Account</label>
+                        <select class="form-control" id="billPay-period" required>
+                            <option type="char" value="" disabled selected>Select payment period</option>
+                            <option value='O'>Once off</option>
+                            <option value='M'>Monthly</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="billPay-amount" class="form-label">Amount</label>
+                        <input type="number" step="0.01" class="form-control" id="billPay-amount"
+                            placeholder="Enter amount" required min="0.1">
+                    </div>
+                    <hr/>
+                    <div>Note: seeded payeedID's in the database are 411229, 12345 and 54321</div>
+                    <hr/>
+                    <div class="form-group">
+                        <label for="billPay-payee" class="form-label">Payee</label>
+                        <textarea class="form-control" id="billPay-payee"
+                            placeholder="Please enter the Payees's ID"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="billPay-date" class="form-label">Date (UTC Time)</label>
+                        <textarea class="form-control" id="billPay-date"
+                            placeholder="Please enter date in this format: MM/DD/YYYY (In UTC TIME)"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="billPay-time" class="form-time">Time (UTC Time)</label>
+                        <textarea class="form-control" id="billPay-time"
+                            placeholder="Please enter in 24 hour time: 00:00 - 24:00 (In UTC TIME)"></textarea>
+                    </div>
+                    <div id="billPayError" style="color:red">Invalid input, please try again</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="dismissBillPayModal" type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                <button id="submitBillPayButton" type="button" class="btn btn-primary">Schedule Bill</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var billPayErrorDisplay = document.getElementById("billPayError");
+    billPayErrorDisplay.style.display = "none";
+
+    document.getElementById("scheduleNewBillButton").addEventListener("click", function () {
+
+        $('#billPayModal').modal('toggle');
+    });
+
+    document.getElementById("dismissBillPayModal").addEventListener("click", function () {
+
+        $('#billPayModal').modal('toggle');
+    });
+
+
+    document.getElementById("submitBillPayButton").addEventListener("click", function () {
+
+        const accountSelect = document.getElementById("billPay-accountSelect");
+        const periodSelect = document.getElementById("billPay-period");
+        const amountInput = document.getElementById("billPay-amount");
+        const payee = document.getElementById("billPay-payee");
+        const dateInput = document.getElementById("billPay-date");
+        const timeInput = document.getElementById("billPay-time");
+
+        const selectedAccount = accountSelect.options[accountSelect.selectedIndex].value;
+        const selectedPeriod = periodSelect.options[periodSelect.selectedIndex].value;
+        const amount = parseFloat(amountInput.value);
+        const payeeID = payee.value;
+
+
+
+        const date = dateInput.value;
+        const [month, day, year] = date.split("/");
+        const time = timeInput.value;
+        const [hours, minutes] = time.split(":");
+
+        // Create billpay object
+        const billPay = {
+            BillPayId: 0,
+            AccountNumber: selectedAccount,
+            PayeeId: payeeID,
+            Period: selectedPeriod,
+            Amount: amount,
+            ScheduleTimeUtc: (year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":00.000Z"),
+            Failed: false
+        };
+
+        const route = '/Home/BillPay';
+        submitBillPay(billPay, route);
+
+    });
+
+    async function submitBillPay(billpay, route) {
+
+        const formData = new FormData();
+
+        for (const key in billpay) {
+            if (billpay.hasOwnProperty(key)) {
+                formData.append(key, billpay[key]);
+            }
+        }
+
+        const response = await fetch(route, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        } else if (response.status == 400) {
+            billPayErrorDisplay.style.display = "block";
+        }
+
+    }
+
+    async function retryBillPay(billPayId) {
+        const route = "/Home/RetryBillPay";
+        const formData = new FormData();
+
+        formData.append("billPayId", billPayId);
+
+        const response = await fetch(route, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        } else if (response.status == 400) {
+            billPayErrorDisplay.style.display = "block";
+        }
+    }
+
+    async function cancelBillPay(billPayId) {
+        const route = "/Home/CancelBillPay";
+        const formData = new FormData();
+
+        formData.append("billPayId", billPayId);
+
+         const response = await fetch(route, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = "/Home";
+        } else if (response.status == 400) {
+            billPayErrorDisplay.style.display = "block";
+        }
+    }
+</script>

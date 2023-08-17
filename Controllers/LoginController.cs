@@ -20,7 +20,6 @@ public class LoginController : Controller
     {
          // If DB is unpopulated, populate it
         await _loginRepository.InitialiseDB();
-
         return View();
     }
 

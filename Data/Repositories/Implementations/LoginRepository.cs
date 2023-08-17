@@ -8,19 +8,23 @@ public class LoginRepository : ILoginRepository
 {
     private readonly IDataAccessRepository _dataAccess;
     private readonly IUserDataWebServiceRepository<List<Customer>> _jsonDataWebService;
+    private readonly IPaymentRepository _paymentRepository;
 
-    public LoginRepository(IDataAccessRepository dataAccess, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService)
+    public LoginRepository(IDataAccessRepository dataAccess, IUserDataWebServiceRepository<List<Customer>> jsonDataWebService
+    , IPaymentRepository paymentRepository)
     {
         _dataAccess = dataAccess;
         _jsonDataWebService = jsonDataWebService;
+        _paymentRepository = paymentRepository;
     }
 
     public async Task InitialiseDB()
-    {            
+    {
         if (_dataAccess.CheckForPopulatedDb() == false)
         {
             List<Customer> customers = await _jsonDataWebService.FetchJsonData("https://coreteaching01.csit.rmit.edu.au/~e103884/wdt/services/customers/");
             _dataAccess.InitUserData(customers);
+            _paymentRepository.SeedPayees();
         }
     }
 

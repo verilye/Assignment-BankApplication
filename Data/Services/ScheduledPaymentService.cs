@@ -7,54 +7,62 @@ using WebDevAss2.Models;
 
 public class ScheduledPaymentService : BackgroundService
 {
-    private readonly IPaymentRepository _paymentRepository; // Replace with your actual repository
-    private readonly TimeSpan _interval = TimeSpan.FromHours(1); // Payment processing interval
+    private readonly TimeSpan _interval = TimeSpan.FromSeconds(5); // Payment processing interval
+    private readonly IServiceProvider _serviceProvider;
 
-    public ScheduledPaymentService(IPaymentRepository paymentRepository)
+    public ScheduledPaymentService(IServiceProvider serviceProvider)
     {
-        _paymentRepository = paymentRepository;
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await ProcessPaymentsAsync();
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var paymentRepository = scope.ServiceProvider.GetRequiredService<IPaymentRepository>();
+                await ProcessPaymentsAsync(paymentRepository);
+            }
+
             await Task.Delay(_interval, stoppingToken);
         }
     }
 
-    private async Task ProcessPaymentsAsync()
+    private async Task ProcessPaymentsAsync(IPaymentRepository paymentRepository)
     {
-        // Retrieve pending payments from the repository
-        var pendingPayments = _paymentRepository.GetPendingPayments();
+        //Return all payments that HAVE NOT FAILED
+        var pendingPayments = paymentRepository.GetPendingPayments();
+
+        // MAKE SURE THAT THE TIME HAS PASSED
 
         foreach (var payment in pendingPayments)
         {
-            // Process payment (check balance, execute payment, update status, etc.)
-            bool paymentSuccessful = ProcessPayment(payment);
+            if (payment.ScheduleTimeUtc < DateTime.UtcNow)
+            {  // PROCESS PAYMENT - Turn into transaction and if successful return true
+                bool paymentSuccessful = ProcessPayment(payment, paymentRepository);
 
-            if (paymentSuccessful)
-            {
-                _paymentRepository.CompletePayment(payment);
-            }
-            else
-            {
-                _paymentRepository.MarkPaymentAsFailed(payment);
+                if (paymentSuccessful)
+                {
+                    paymentRepository.CompletePayment(payment);
+                }
+                else
+                {
+                    paymentRepository.MarkPaymentAsFailed(payment);
+                }
             }
         }
     }
 
-    private bool ProcessPayment(BillPay payment)
+    private bool ProcessPayment(BillPay payment, IPaymentRepository paymentRepository)
     {
-        // Return true if payment was successful, otherwise return false 
-        // Check Balance is above 0
+        float balance = paymentRepository.GetBalanceOfAccount(payment.AccountNumber);
 
-        float balance = _paymentRepository.getBalanceOfAccount(payment.AccountNumber);
-
-        if(balance >= payment.Amount){
-
-            Transaction transaction = new Transaction{
+        if (balance >= payment.Amount)
+        {
+            //CREATE TRANSACTION AND STORE
+            Transaction transaction = new Transaction
+            {
                 TransactionID = 0,
                 TransactionType = TransactionType.T,
                 AccountNumber = payment.AccountNumber,
@@ -63,26 +71,31 @@ public class ScheduledPaymentService : BackgroundService
                 Comment = null,
                 TransactionTimeUtc = payment.ScheduleTimeUtc,
             };
-            _paymentRepository.ValidateAndStoreBillPay(transaction);
-            
-            if(payment.Period == Period.M){
+            paymentRepository.ValidateAndStoreBillPay(transaction);
+
+            //PROPOGATE BILLPAY IF REOCCURING
+            if (payment.Period == Period.M)
+            {
                 //create new billpay + 1 to month
-                BillPay billPay = new BillPay{
+                BillPay billPay = new BillPay
+                {
                     BillPayId = 0,
                     AccountNumber = payment.AccountNumber,
                     PayeeId = payment.PayeeId,
                     Amount = payment.Amount,
-                    ScheduleTimeUtc = payment.ScheduleTimeUtc =DateTime.UtcNow.AddMonths(1),
+                    ScheduleTimeUtc = payment.ScheduleTimeUtc = DateTime.UtcNow.AddMonths(1),
                     Period = payment.Period,
                     Failed = false,
                 };
 
-                _paymentRepository.AddNewBillPay(billPay);
+                paymentRepository.AddNewBillPay(billPay);
             }
 
             return true;
 
-        }else{
+        }
+        else
+        {
             return false;
         }
     }

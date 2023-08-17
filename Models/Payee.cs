@@ -29,7 +29,7 @@ namespace WebDevAss2.Models
 
         [Required, RegularExpression(@"\(\d\d\)\s[0-9]+\s[0-9]+",
             ErrorMessage = "Format needs to be (0X) XXXX XXXX")]
-        [MaxLength(12)]
+        [MaxLength(14)]
         public string Phone { get; set; }= default!;
 
         public ICollection<BillPay>? BillPays { get; set; }

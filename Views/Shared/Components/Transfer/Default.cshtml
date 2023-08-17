@@ -154,7 +154,7 @@
 
         if (response.redirected) {
             window.location.href = "/Home";
-        } else if (response.status == 401) {
+        } else if (response.status == 400) {
             $('#confirmTransfer').modal('toggle');
             transferErrorDisplay.style.display = "block";
         }

@@ -21,7 +21,7 @@ public class HomeController : Controller
         _paymentRepository = paymentRepository;
 
     }
- 
+
     public ActionResult Index()
     {
         int customerID = Int32.Parse(User.FindFirstValue("CustomerId")!)!;
@@ -30,10 +30,11 @@ public class HomeController : Controller
         List<AccountViewModel> accounts = _homeRepository.FetchAccounts(customerID);
         Customer customer = _homeRepository.FetchCustomerById(customerID);
         List<BillPay> billPays = new List<BillPay>();
-        foreach(var accountViewModel in accounts){
+        foreach (var accountViewModel in accounts)
+        {
             List<BillPay> result = _paymentRepository.GetBillPaysByAccountNumber(accountViewModel.Account.AccountNumber);
             billPays.AddRange(result);
-        } 
+        }
         HomeViewDTO dto = new HomeViewDTO
         {
             AccountViewModels = accounts,
@@ -56,7 +57,13 @@ public class HomeController : Controller
         }
         else
         {
-            return StatusCode(401, "Bad account object");
+             var validationErrors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            // Return a 400 Bad Request status code along with validation errors
+            return BadRequest(validationErrors);
         }
     }
 
@@ -71,7 +78,13 @@ public class HomeController : Controller
         }
         else
         {
-            return StatusCode(401, "Bad account object");
+              var validationErrors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            // Return a 400 Bad Request status code along with validation errors
+            return BadRequest(validationErrors);
         }
 
     }
@@ -104,8 +117,13 @@ public class HomeController : Controller
         }
         else
         {
-            //Pass along error message here
-            return StatusCode(401, "Bad account object");
+             var validationErrors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            // Return a 400 Bad Request status code along with validation errors
+            return BadRequest(validationErrors);
         }
 
     }
@@ -126,13 +144,19 @@ public class HomeController : Controller
         }
         else
         {
-            // Notify front end it hasnt gone to plan
-            return StatusCode(401, "Bad customer object");
+             var validationErrors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            // Return a 400 Bad Request status code along with validation errors
+            return BadRequest(validationErrors);
         }
 
     }
 
-    public IActionResult ChangePassword(){
+    public IActionResult ChangePassword()
+    {
 
         ClaimsPrincipal user = HttpContext.User;
         Claim customerIdClaim = user.FindFirst("CustomerId")!;
@@ -143,22 +167,77 @@ public class HomeController : Controller
         string password = Request.Form["password"]!;
         string hashedPassword = _homeRepository.HashPassword(password);
 
-        Login login = new Login{
+        Login login = new Login
+        {
             LoginId = loginID,
-            CustomerId = customerID, 
+            CustomerId = customerID,
             PasswordHash = hashedPassword
         };
 
-        if(_homeRepository.ChangePassword(login) && ModelState.IsValid)
+        if (_homeRepository.ChangePassword(login) && ModelState.IsValid)
         {
             // Process request
             return RedirectToAction("Index", "Home");
         }
         else
         {
-            // Notify front end it hasnt gone to plan
-            return StatusCode(401, "Bad Login object");
+            var validationErrors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            // Return a 400 Bad Request status code along with validation errors
+            return BadRequest(validationErrors);
         }
+    }
+
+
+    [HttpPost]
+    public IActionResult BillPay([FromForm] BillPay billPay)
+    {
+        if (ModelState.IsValid && _paymentRepository.ConfirmPayeeIdExists(billPay.PayeeId))
+        {
+            _paymentRepository.AddNewBillPay(billPay);
+
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            var validationErrors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            // Return a 400 Bad Request status code along with validation errors
+            return BadRequest(validationErrors);
+        }
+    }
+
+    [HttpPost]
+    public IActionResult RetryBillPay(){
+        string billPayId = Request.Form["billPayId"]!;
+        BillPay bill = _paymentRepository.GetBillPayById(Int32.Parse(billPayId));
+
+        // Get rid of failed billpay
+        _paymentRepository.CompletePayment(bill);
+        //retry billpay
+        bill.BillPayId = 0;
+        bill.Failed = false;
+        _paymentRepository.AddNewBillPay(bill);
+        
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public IActionResult CancelBillPay()
+    {
+        string billPayId = Request.Form["billPayId"]!;
+        BillPay bill = _paymentRepository.GetBillPayById(Int32.Parse(billPayId));
+
+        _paymentRepository.CompletePayment(bill);
+
+        return RedirectToAction("Index", "Home");
     }
 
     public async Task<ActionResult> Logout()
