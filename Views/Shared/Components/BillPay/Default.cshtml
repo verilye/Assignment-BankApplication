@@ -26,6 +26,10 @@
                         <td>@billpay.Amount</td>
                         <td>@billpay.ScheduleTimeUtc</td>
                         <td>@billpay.Period</td>
+                        <td><button class="btn btn-primary" onclick="cancelBillPay('@billpay.BillPayId')">Cancel</button></td>
+                        @if(billpay.Blocked == 1){
+                            <td style="color:red">BLOCKED</td>
+                        }
                     </tr>
                 }
             }
@@ -60,6 +64,9 @@
                         <td>@failed.Period</td>
                         <td><button class="btn btn-primary" onclick="cancelBillPay('@failed.BillPayId')">Cancel</button></td>
                         <td><button class="btn btn-primary" onclick="retryBillPay('@failed.BillPayId')">Retry</button></td>
+                        @if(failed.Blocked == 1){
+                            <td style="color:red">BLOCKED</td>
+                        }
                     </tr>
                 }
             }

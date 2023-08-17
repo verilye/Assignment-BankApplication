@@ -30,6 +30,8 @@ public class BillPay{
     [Required]
     public bool Failed{get;set;}
 
+    public int Blocked{get;set;} = 0;
+
     public Payee? Payee{get;set;}
 
     public Account? Account{get;set;}

@@ -38,7 +38,7 @@ public class ScheduledPaymentService : BackgroundService
 
         foreach (var payment in pendingPayments)
         {
-            if (payment.ScheduleTimeUtc < DateTime.UtcNow)
+            if (payment.ScheduleTimeUtc < DateTime.UtcNow && payment.Blocked == 0)
             {  // PROCESS PAYMENT - Turn into transaction and if successful return true
                 bool paymentSuccessful = ProcessPayment(payment, paymentRepository);
 

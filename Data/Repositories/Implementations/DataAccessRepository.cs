@@ -39,6 +39,7 @@ public class DataAccessRepository : IDataAccessRepository
             }
             Login login = customer.Login!;
             login.CustomerId = customer.CustomerId;
+            login.Locked = 0;
 
             _context.Logins.Add(login);
         }

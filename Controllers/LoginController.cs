@@ -30,7 +30,7 @@ public class LoginController : Controller
         string password = Request.Form["password"]!;
         Login? result = _loginRepository.ValidateLoginDetails(loginID, password);
         
-        if (result != null)
+        if (result != null && result.Locked == 0)
         {
             var claims = new List<Claim>
             {
@@ -51,7 +51,7 @@ public class LoginController : Controller
         else
         {
             //Pass along error message here
-            return StatusCode(401, "Bad username or password");
+            return StatusCode(401, "Invalid login");
         }
     }
 

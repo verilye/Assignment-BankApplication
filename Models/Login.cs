@@ -20,6 +20,8 @@ namespace WebDevAss2.Models
         [MaxLength(94), MinLength(3)]
         public string PasswordHash { get; set; } = default!;
 
+        public int Locked {get;set;} = 0!;
+
         public Customer? Customer {get;set;}
 
     }

@@ -57,10 +57,10 @@ public class HomeController : Controller
         }
         else
         {
-             var validationErrors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
+            var validationErrors = ModelState.Values
+               .SelectMany(v => v.Errors)
+               .Select(e => e.ErrorMessage)
+               .ToList();
 
             // Return a 400 Bad Request status code along with validation errors
             return BadRequest(validationErrors);
@@ -78,10 +78,10 @@ public class HomeController : Controller
         }
         else
         {
-              var validationErrors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
+            var validationErrors = ModelState.Values
+              .SelectMany(v => v.Errors)
+              .Select(e => e.ErrorMessage)
+              .ToList();
 
             // Return a 400 Bad Request status code along with validation errors
             return BadRequest(validationErrors);
@@ -117,10 +117,10 @@ public class HomeController : Controller
         }
         else
         {
-             var validationErrors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
+            var validationErrors = ModelState.Values
+               .SelectMany(v => v.Errors)
+               .Select(e => e.ErrorMessage)
+               .ToList();
 
             // Return a 400 Bad Request status code along with validation errors
             return BadRequest(validationErrors);
@@ -144,10 +144,10 @@ public class HomeController : Controller
         }
         else
         {
-             var validationErrors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
+            var validationErrors = ModelState.Values
+               .SelectMany(v => v.Errors)
+               .Select(e => e.ErrorMessage)
+               .ToList();
 
             // Return a 400 Bad Request status code along with validation errors
             return BadRequest(validationErrors);
@@ -197,6 +197,7 @@ public class HomeController : Controller
     {
         if (ModelState.IsValid && _paymentRepository.ConfirmPayeeIdExists(billPay.PayeeId))
         {
+            billPay.Blocked = 0;
             _paymentRepository.AddNewBillPay(billPay);
 
             return RedirectToAction("Index", "Home");
@@ -214,19 +215,27 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult RetryBillPay(){
+    public IActionResult RetryBillPay()
+    {
         string billPayId = Request.Form["billPayId"]!;
         BillPay bill = _paymentRepository.GetBillPayById(Int32.Parse(billPayId));
 
-        // Get rid of failed billpay
-        _paymentRepository.CompletePayment(bill);
-        //retry billpay
-        bill.BillPayId = 0;
-        bill.Failed = false;
-        _paymentRepository.AddNewBillPay(bill);
-        
+        if (bill.Blocked == 1)
+        {
+            return BadRequest("BLOCKED");
+        }
+        else
+        {
+            // Get rid of failed billpay
+            _paymentRepository.CompletePayment(bill);
+            //retry billpay
+            bill.BillPayId = 0;
+            bill.Failed = false;
+            _paymentRepository.AddNewBillPay(bill);
 
-        return RedirectToAction("Index", "Home");
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 
     [HttpPost]
