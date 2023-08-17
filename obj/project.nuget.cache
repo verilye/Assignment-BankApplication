@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "cc8JDbJnWmnX3ESo8tuzxPwjEyo3dvZY4OVQ05XyEeB2k6wPLp0Fb0hC7U/LPAlTcNmGsEsgGSqrni/gPF1Ang==",
+  "dgSpecHash": "JjrM32/p4N0Wnq/KQOAfy4WO8TqoWvHQSV8ZHi2sPuYlxiL0sniRQCGvuzYicK8ORnXwtPPgNaGy8UTP8YnJVA==",
   "success": true,
   "projectFilePath": "/home/connorlogan/Desktop/WebDevAss2/WebDevAss2.csproj",
   "expectedPackageFiles": [
     "/home/connorlogan/.nuget/packages/azure.core/1.24.0/azure.core.1.24.0.nupkg.sha512",
     "/home/connorlogan/.nuget/packages/azure.identity/1.6.0/azure.identity.1.6.0.nupkg.sha512",
     "/home/connorlogan/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
+    "/home/connorlogan/.nuget/packages/magick.net-q16-anycpu/13.2.0/magick.net-q16-anycpu.13.2.0.nupkg.sha512",
+    "/home/connorlogan/.nuget/packages/magick.net.core/13.2.0/magick.net.core.13.2.0.nupkg.sha512",
     "/home/connorlogan/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "/home/connorlogan/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
     "/home/connorlogan/.nuget/packages/microsoft.data.sqlclient/5.0.2/microsoft.data.sqlclient.5.0.2.nupkg.sha512",

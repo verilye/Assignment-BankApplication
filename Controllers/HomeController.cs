@@ -249,6 +249,46 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [HttpPost]
+    public async Task<IActionResult> UploadProfilePicture(IFormFile profilePictureFile)
+    {
+        if (profilePictureFile != null && profilePictureFile.Length > 0)
+        {
+            using var memoryStream = new MemoryStream();
+            profilePictureFile.CopyTo(memoryStream);
+
+            //Get customer from db, add profilePicture file to ProfilePicture, and GET THE HELL OUT 
+
+            int customerID = Int32.Parse(User.FindFirstValue("CustomerId")!)!;
+            Customer customer = _homeRepository.FetchCustomerById(customerID);
+            customer.ProfilePicture = memoryStream.ToArray();
+
+            _homeRepository.StoreCustomerDetails(customer);
+        }
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult GetProfilePicture(string userId)
+    {
+        // Get customer 
+        int customerID = Int32.Parse(User.FindFirstValue("CustomerId")!)!;
+        Customer customer = _homeRepository.FetchCustomerById(customerID);
+
+        if (customer?.ProfilePicture != null)
+        {
+            return File(customer.ProfilePicture, "image/jpeg"); // Adjust content type as needed
+        }
+        else
+        {
+            // Return a default image or placeholder
+            var defaultImagePath = "path_to_default_image.jpg";
+            var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
+            return File(defaultImageBytes, "image/jpeg");
+        }
+    }
+
     public async Task<ActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

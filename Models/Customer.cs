@@ -39,6 +39,7 @@ namespace WebDevAss2.Models
             ErrorMessage = "Format needs to be 04XX XXX XXX")]
         [MaxLength(12)]
         public string? Mobile { get; set; }
+        public byte[]? ProfilePicture{get;set;}
 
         public ICollection<Account>? Accounts { get; set; }
         public Login? Login { get; set; }
