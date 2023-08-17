@@ -18,8 +18,13 @@ I used razor pages and bootstrap 5 for handling front end stuff as I originally
 assumed those were mandatory for the assignment specs. 
 
 ## Note on Unit Tests
+I unit tested all the methods and classes that have notably complex logic. 
+I used theories notably in HomeRepositoryTests and LoginControllerTests.
 I tried to use the repository pattern throughout my whole project, so chose not to
 unit test many intermediary repository methods as they provide no logic other than
-passing a value to data access and returning that value back.
+passing a value to data access and returning that value back. In addition,
+most of the data access operations are incredibly similar and simple, so I would
+argue there is very little point to testing them other than an arbitrary code coverage
+percentage.
 
 
