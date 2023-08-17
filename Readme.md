@@ -1,22 +1,25 @@
 # Web Development Technologies Assignment 2
 
-### Running the project
+## About me
+Name: Connor Logan
+StudentNumber: s3768929
+Github Repo: https://github.com/rmit-wdt-sp2-2023/s3768929-a2.git 
 
-dotnet watch allows hot reloading (play while you build)
+## Note on Validation
+As this assignment was completed on a tight deadline, I made the decision
+to handle validation mostly on the backend as is specified in the assignment
+criteria. The app wont let you insert or modify bad data, but it handles errors
+in an ugly way sometimes. 
 
-## General Architecture and Plan
+## Design Choices
+In an attempt to adhere to best practices for a webapp of this ilk I tried
+to implement the repository deisgn pattern across my entire project. 
+I used razor pages and bootstrap 5 for handling front end stuff as I originally
+assumed those were mandatory for the assignment specs. 
 
-The main program will be created using the repository pattern to save work on the admin portal. 
-
-EMPHASIS on employing OOP with code validation as I tend
-to hack large validation methods together. 
-
-Special care should be taken to employ design patterns with the business logic and data access layers
-
-Brief design evaluations should take place before creating a feature and after the trello card has been completed
-
-Designs:
-Bubble dark tone designs look modern
-
+## Note on Unit Tests
+I tried to use the repository pattern throughout my whole project, so chose not to
+unit test many intermediary repository methods as they provide no logic other than
+passing a value to data access and returning that value back.
 
 

@@ -43,7 +43,7 @@ public class ScheduledPaymentService : BackgroundService
                 bool paymentSuccessful = ProcessPayment(payment, paymentRepository);
 
                 if (paymentSuccessful)
-                {
+                { 
                     paymentRepository.CompletePayment(payment);
                 }
                 else

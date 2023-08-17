@@ -49,7 +49,6 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Deposit([FromForm] Transaction transaction)
     {
-        Console.WriteLine("HELLO WORLD");
         _homeRepository.ValidateAndStoreTransaction(transaction);
         return RedirectToAction("Index", "Home");
 

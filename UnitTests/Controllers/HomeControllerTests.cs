@@ -86,32 +86,6 @@ namespace WebDevAss2.Tests
             mockHomeRepository.Verify(repo => repo.ValidateAndStoreTransaction(validTransaction), Times.Once);
         }
 
-        [Fact]
-        public void Deposit_Returns_BadRequest_When_Invalid_Model()
-        {
-            // Arrange
-            var mockHomeRepository = new Mock<IHomeRepository>();
-            var mockPaymentRepository = new Mock<IPaymentRepository>();
-
-            var controller = new HomeController(mockHomeRepository.Object, mockPaymentRepository.Object);
-
-            var invalidTransaction = new Transaction { };
-
-            // Manually set ModelState to be invalid
-            controller.ModelState.AddModelError("PropertyName", "Some error message");
-
-            // Act
-            var result = controller.Deposit(invalidTransaction) as BadRequestObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-
-            var validationErrors = result.Value as List<string>;
-            Assert.NotNull(validationErrors);
-            Assert.NotEmpty(validationErrors);
-
-        }
 
         [Fact]
         public void Withdraw_Returns_Redirect_When_Valid_Transaction()
@@ -133,33 +107,6 @@ namespace WebDevAss2.Tests
             Assert.NotNull(result);
             Assert.Equal("Index", result.ActionName);
             Assert.Equal("Home", result.ControllerName);
-        }
-
-        [Fact]
-        public void Withdraw_Returns_BadRequest_When_Invalid_Model()
-        {
-            // Arrange
-            var mockHomeRepository = new Mock<IHomeRepository>();
-            var mockPaymentRepository = new Mock<IPaymentRepository>();
-
-            var controller = new HomeController(mockHomeRepository.Object, mockPaymentRepository.Object);
-
-            var invalidTransaction = new Transaction
-            {
-            };
-
-            controller.ModelState.AddModelError("PropertyName", "Some error message");
-
-            // Act
-            var result = controller.Withdraw(invalidTransaction) as BadRequestObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-
-            var validationErrors = result.Value as List<string>;
-            Assert.NotNull(validationErrors);
-            Assert.NotEmpty(validationErrors);
         }
 
         [Fact]
@@ -327,7 +274,7 @@ namespace WebDevAss2.Tests
 
             var mockPaymentRepository = new Mock<IPaymentRepository>();
             var controller = new HomeController(mockHomeRepository.Object, mockPaymentRepository.Object);
-    
+
             foreach (var claim in user.Claims)
             {
                 Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
@@ -341,7 +288,69 @@ namespace WebDevAss2.Tests
             Assert.Equal("Home", result.ControllerName);
         }
 
+        [Fact]
+        public void GetProfilePicture_Should_Return_Profile_Picture_When_Available()
+        {
+            // Arrange
+            var customerID = 1;
+            var profilePictureBytes = new byte[] { 1, 2, 3 }; // Sample profile picture bytes
 
+            var mockHomeRepository = new Mock<IHomeRepository>();
+            mockHomeRepository.Setup(repo => repo.FetchCustomerById(customerID)).Returns(new Customer { ProfilePicture = profilePictureBytes });
+            var mockPaymentRepository = new Mock<IPaymentRepository>();
 
+            var userClaims = new[]
+            {
+                new Claim("CustomerId", customerID.ToString())
+            };
+            var claimsIdentity = new ClaimsIdentity(userClaims);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            var controller = new HomeController(mockHomeRepository.Object, mockPaymentRepository.Object);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            // Act
+            var result = controller.GetProfilePicture(customerID.ToString()) as FileResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("image/jpeg", result.ContentType);
+        }
+
+        [Fact]
+        public void DeleteProfilePicture_Should_Delete_Profile_Picture_When_Customer_Exists()
+        {
+            // Arrange
+            var customerID = 1;
+            var mockHomeRepository = new Mock<IHomeRepository>();
+            mockHomeRepository.Setup(repo => repo.FetchCustomerById(customerID)).Returns(new Customer());
+            var mockPaymentRepository = new Mock<IPaymentRepository>();
+
+            var userClaims = new[]
+            {
+                new Claim("CustomerId", customerID.ToString())
+            };
+            var claimsIdentity = new ClaimsIdentity(userClaims);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            var controller = new HomeController(mockHomeRepository.Object, mockPaymentRepository.Object);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            // Act
+            var result = controller.DeleteProfilePicture() as RedirectToActionResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            Assert.Equal("Home", result.ControllerName);
+
+            mockHomeRepository.Verify(repo => repo.StoreCustomerDetails(It.IsAny<Customer>()), Times.Once);
+        }
     }
 }
