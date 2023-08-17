@@ -212,4 +212,8 @@ public class DataAccessRepository : IDataAccessRepository
     public BillPay GetBillPayById(int billPayId){
         return _context.BillPays.Find(billPayId);
     }
+    public Account GetAccountByNumber(int accountNumber){
+        return _context.Accounts.Find(accountNumber);
+    }
+
 }

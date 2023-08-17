@@ -49,44 +49,17 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Deposit([FromForm] Transaction transaction)
     {
+        Console.WriteLine("HELLO WORLD");
+        _homeRepository.ValidateAndStoreTransaction(transaction);
+        return RedirectToAction("Index", "Home");
 
-        if (ModelState.IsValid)
-        {
-            _homeRepository.ValidateAndStoreTransaction(transaction);
-
-            return RedirectToAction("Index", "Home");
-        }
-        else
-        {
-            var validationErrors = ModelState.Values
-               .SelectMany(v => v.Errors)
-               .Select(e => e.ErrorMessage)
-               .ToList();
-
-            // Return a 400 Bad Request status code along with validation errors
-            return BadRequest(validationErrors);
-        }
     }
 
     [HttpPost]
     public IActionResult Withdraw([FromForm] Transaction transaction)
     {
-        if (ModelState.IsValid)
-        {
-            _homeRepository.ValidateAndStoreTransaction(transaction);
-
-            return RedirectToAction("Index", "Home");
-        }
-        else
-        {
-            var validationErrors = ModelState.Values
-              .SelectMany(v => v.Errors)
-              .Select(e => e.ErrorMessage)
-              .ToList();
-
-            // Return a 400 Bad Request status code along with validation errors
-            return BadRequest(validationErrors);
-        }
+        _homeRepository.ValidateAndStoreTransaction(transaction);
+        return RedirectToAction("Index", "Home");
 
     }
 
@@ -98,7 +71,7 @@ public class HomeController : Controller
         {
             return StatusCode(401, "DestinationAccount is null");
         }
-        else if (_homeRepository.ConfirmDestinationAccountExists((int)transaction.DestinationAccountNumber) && ModelState.IsValid)
+        else if (_homeRepository.ConfirmDestinationAccountExists((int)transaction.DestinationAccountNumber))
         {
             Transaction destinationTransaction = new Transaction
             {
@@ -110,7 +83,6 @@ public class HomeController : Controller
                 Comment = transaction.Comment,
                 TransactionTimeUtc = transaction.TransactionTimeUtc,
             };
-
             _homeRepository.ValidateAndStoreTransaction(transaction);
             _homeRepository.ValidateAndStoreTransaction(destinationTransaction);
 

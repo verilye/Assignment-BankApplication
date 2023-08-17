@@ -24,6 +24,7 @@ public interface IDataAccessRepository
     void AddPayee(Payee payee);
     bool CheckForPayeeId(int payeeId);
     BillPay GetBillPayById(int billPayId);
+    Account GetAccountByNumber(int accountNumber);
 
 }
 
