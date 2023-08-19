@@ -2,13 +2,13 @@
 @{
     ViewData["route"] = "/Home/Withdraw";
 }
-
-<div class="container border p-4">
-    <h3>Make a Withdrawal</h3>
+ 
+<div class="container border rounded p-4 bg-light">
+    <h4 class="fw-bold p-3 pt-2"> Make a Withdrawal</h4>
     <form id="withdrawForm" method="post">
         <div class="form-group">
             <label for="withdraw-accountSelect" class="form-label">Select Account</label>
-            <select class="form-control" id="withdraw-accountSelect" required>
+            <select class="form-control form-select" id="withdraw-accountSelect" required>
                 <option type="number" value="" disabled selected>Select an account</option>
                 @foreach (var item in Model.AccountViewModels)
                 {
@@ -30,6 +30,21 @@
         </div>
     </form>
 </div>
+
+<style>
+    .form-group {
+        padding:15px;
+        margin: 10px;
+        border-radius: 1rem;
+        background-color: white;
+        border-color: lightgray;
+        border-style: solid;
+        border-width:0.1px;
+    }
+    label{
+        font-weight: bold;
+    }
+</style>
 
 <div class="modal" id="confirmWithdraw" tabindex="10" aria-labelledby="confirmWithdrawLabel">
     <div class="modal-dialog">
