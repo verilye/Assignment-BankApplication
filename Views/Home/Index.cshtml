@@ -3,11 +3,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="home-page" class="row" height="100vh" width="100vw">
-    <div class="col-2">
+<div>
+    <div id="homePageLeft">
         @await Component.InvokeAsync("SideBar")
     </div>
-    <div class="col-6 mt-4">
+    <div class="col-5 mt-4" id="homePageMiddle">
         <div class="row" id="sidebar-viewport">
             <div id="depositView" class="d-block">@await Component.InvokeAsync("Deposit")</div>
             <div id="withdrawView" class="d-none"> @await Component.InvokeAsync("Withdraw")</div>
@@ -20,32 +20,46 @@
             <div class="container">
                 <h4>Accounts:</h3>
 
-                <div class="container d-flex justify-content-left"></div>
-                @foreach (var item in Model.AccountViewModels)
-                {
-                    <div class="card p-3" style="width:50%">
-                        <div class="col">Account Number: @item.Account.AccountNumber</div>
-                        <div class="col">Balance: $@item.Balance</div>
-                    </div>
-                }
+                    <div class="container d-flex justify-content-left"></div>
+                    @foreach (var item in Model.AccountViewModels)
+                    {
+                        <div class="card p-3" style="width:50%">
+                            <div class="col">Account Number: @item.Account.AccountNumber</div>
+                            <div class="col">Balance: $@item.Balance</div>
+                        </div>
+                    }
             </div>
         </div>
-    </div>
-    <div class="col-2">
+    </div>  
+    <div class="col-2" id="homePageRight">
         @await Component.InvokeAsync("ProfileDisplay")
     </div>
 </div>
 
+
 <style>
-    #sidebar-viewport{
-        width:50%;
-        position:absolute;
-        height:70vh;
+    #homePageLeft {
+        margin-left: 0vw;
+        position: absolute;
     }
-    #account-display{
-        margin-top:70vh;
-        margin-left:16.5vw;
-        position:absolute;
-        height:30vh;
+
+    #homePageMiddle {
+        margin-left: 20vw;
+        width: 50%;
+        position: absolute;
+        height: 70vh;
+    }
+
+    #account-display {
+        margin-top: 70vh;
+        margin-left: 16.5vw;
+        position: absolute;
+        height: 30vh;
+        width:50%;
+    }
+
+    #homePageRight {
+        position: absolute;
+        margin-left: 83vw;
     }
 </style>
