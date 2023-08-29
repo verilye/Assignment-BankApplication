@@ -73,7 +73,7 @@ public class ScheduledPaymentService : BackgroundService
             };
             paymentRepository.ValidateAndStoreBillPay(transaction);
 
-            //PROPOGATE BILLPAY IF REOCCURING
+            //PROPAGATE BILLPAY IF REOCCURING
             if (payment.Period == Period.M)
             {
                 //create new billpay + 1 to month

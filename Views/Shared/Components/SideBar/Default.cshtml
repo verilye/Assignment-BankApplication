@@ -62,9 +62,11 @@
             if (view === viewId) {
                 element.classList.remove("d-none");
                 element.classList.add("d-block");
+                element.style.zIndex = "1000";
             } else {
                 element.classList.remove("d-block");
                 element.classList.add("d-none");
+                element.style.zIndex = "1";
             }
         }
     }
