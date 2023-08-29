@@ -17,20 +17,22 @@
             <div id="billPayView" class="d-none">@await Component.InvokeAsync("BillPay")</div>
         </div>
         <div class="row" id="account-display">
-            <div class="container">
-                <h4>Accounts:</h3>
-
-                    <div class="container d-flex justify-content-left"></div>
-                    @foreach (var item in Model.AccountViewModels)
-                    {
-                        <div class="card p-3" style="width:50%">
-                            <div class="col">Account Number: @item.Account.AccountNumber</div>
-                            <div class="col">Balance: $@item.Balance</div>
+            <div class="rounded" style="width:100%">
+                <div class="bg-primary rounded">
+                    <h4 class="p-3 text-white">Accounts:</h3>
+                </div>
+                @foreach (var item in Model.AccountViewModels)
+                {
+                    <div class="card p-3 container-fluid" style="width:100%">
+                        <div class="row">
+                            <div class="col-3">Account Number: @item.Account.AccountNumber</div>
+                            <div class="col-2">Balance: $@item.Balance</div>
                         </div>
-                    }
+                    </div>
+                }
             </div>
         </div>
-    </div>  
+    </div>
     <div class="col-2" id="homePageRight">
         @await Component.InvokeAsync("ProfileDisplay")
     </div>
@@ -51,11 +53,11 @@
     }
 
     #account-display {
-        margin-top: 70vh;
-        margin-left: 16.5vw;
+        margin-top: 75vh;
+        margin-left: 20vw;
         position: absolute;
         height: 30vh;
-        width:50%;
+        width: 50%;
     }
 
     #homePageRight {

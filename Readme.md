@@ -2,8 +2,7 @@
 
 ## About me
 Name: Connor Logan
-StudentNumber: s3768929
-Github Repo: https://github.com/rmit-wdt-sp2-2023/s3768929-a2.git 
+StudentNumber: s3768929, RMIT University
 
 ## Note on Validation
 As this assignment was completed on a tight deadline, I made the decision
